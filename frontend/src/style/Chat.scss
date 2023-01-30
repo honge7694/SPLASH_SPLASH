@@ -1,0 +1,10 @@
+.Chat {
+    .ant-card-body{
+        min-width: 260px;
+        max-height: 250px;
+        overflow: auto;
+    }
+    .ant-card-actions{
+        cursor: default;
+    }
+}
