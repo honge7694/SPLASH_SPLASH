@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MailOutlined } from '@ant-design/icons';
 import { Input, Menu } from 'antd';
-import { useState } from 'react';
 import Chat from './Chat';
+import SideMenu from './SideMenu';
 import '../style/AppLayout.scss';
 
 
@@ -43,8 +43,8 @@ const AppLayout =  (props) => {
 
     return (
         <div className='app'>
-            <div className='left-blank'>
-
+            <div className='chat'>
+                <Chat />
             </div>
             <div className='main'>
                 <div className='header'>
@@ -65,8 +65,8 @@ const AppLayout =  (props) => {
                     Footer
                 </div>
             </div>
-            <div className='chat'>
-                <Chat />
+            <div className='side-menu'>
+                <SideMenu />
             </div>
         </div>
     );

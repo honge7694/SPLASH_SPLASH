@@ -53,8 +53,9 @@ class User(AbstractBaseUser):
         FEMALE = 'F', '여성'
 
     email = models.EmailField(max_length=255, unique=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    nickname = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=13, blank=True, validators=[RegexValidator(r"^010-?[1-9]\d{3}-?\d{4}$")])
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=1, choices=GenderChoices.choices)

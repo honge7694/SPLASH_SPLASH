@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Button, Input } from "antd";
-import "../style/Chat.scss";
+
 
 const Chat = ({style}) => {
     return (

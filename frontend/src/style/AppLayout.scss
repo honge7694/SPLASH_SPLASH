@@ -2,13 +2,23 @@
     display: grid;
     grid-template-columns:1fr 2fr 1fr;
     grid-template-areas:
-        'blank main chat';
+        'chat main side-menu';
     gap: 1rem;
     // margin: 10px auto;
 
-    .left-blank{
-        grid-area: blank;
+    .chat{
+        grid-area: chat;
+        margin: 30px auto;
+        .ant-card-body{
+            min-width: 260px;
+            max-height: 250px;
+            overflow: auto;
+        }
+        .ant-card-actions{
+            cursor: default;
+        }
     }
+
     .main {
         display: grid;
         gap: 1rem;
@@ -51,8 +61,13 @@
             justify-self: center;
         }
     }
-    .chat{
-        grid-area: chat;
+
+    .side-menu{
+        grid-area: side-menu;
         margin: 30px auto;
+        .menu{
+            border: 1px solid rgba(5, 5, 5, 0.06);
+            border-radius: 8px;
+        }
     }
 }
