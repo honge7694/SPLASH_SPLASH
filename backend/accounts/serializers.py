@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from django.contrib.auth import get_user_model
 
 
@@ -26,7 +27,7 @@ class SignupSerializer(serializers.Serializer):
         ('F', '여성')
     )
 
-    email = serializers.EmailField()
+    email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all())])
     password = serializers.CharField(write_only=True)
     nickname = serializers.CharField()
     first_name = serializers.CharField()

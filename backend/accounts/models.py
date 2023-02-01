@@ -5,7 +5,7 @@ from django.shortcuts import resolve_url
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, phone_number, date_of_birth, gender, password=None):
+    def create_user(self, email, nickname, first_name, last_name, phone_number, date_of_birth, gender, password=None):
         if not email:
             raise ValueError('Users must have an email address')
         elif not first_name:
@@ -21,6 +21,7 @@ class UserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
+            nickname=nickname,
             first_name=first_name,
             last_name=last_name,
             phone_number=phone_number,
@@ -32,9 +33,10 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, first_name, last_name, phone_number, date_of_birth, gender, password=None):
+    def create_superuser(self, email, nickname, first_name, last_name, phone_number, date_of_birth, gender, password=None):
         user = self.create_user(
             email,
+            nickname=nickname,
             first_name=first_name,
             last_name=last_name,
             phone_number=phone_number,
