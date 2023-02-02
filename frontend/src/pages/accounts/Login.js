@@ -2,20 +2,16 @@ import React, { useState } from 'react';
 import { Button, Form, Input, notification, Card } from 'antd';
 import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
 import Axios from "axios";
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../../style/accounts/Login.scss';
-import useLocalStorage from 'utils/useLocalStorage';
+import { setToken, refreshToken, useAppContext } from 'store';
 
 
 
 const Login = () => {
+    const { dispatch } = useAppContext();
     const history = useNavigate();
-    const [ jwtToken, setJwtToken ] = useLocalStorage("jwtToken", "");
-    const [ refreshToken, setRefreshToken ] = useLocalStorage("refresh", "");
     const [api, setApi] = notification.useNotification();
-
-    console.log('jwtToken : ', jwtToken);
-    console.log('refreshToken : ', refreshToken);
 
     const onFinish = (values) => {
         console.log("inputs : ", values);
@@ -25,12 +21,13 @@ const Login = () => {
         const handleSubmit = async () => {
             try{
                 const response = await Axios.post('http://localhost:8000/accounts/api/token/', data)
-                console.log('response : ', response);
                 const { data : {access : jwtToken, refresh } } = response;
-
+                
+                console.log('response : ', response);
                 console.log(jwtToken, refresh);
-                setJwtToken(jwtToken);
-                setRefreshToken(refresh);
+
+                dispatch(setToken(jwtToken));
+                dispatch(refreshToken(refresh));
 
 
                 api.info({
@@ -38,10 +35,11 @@ const Login = () => {
                     icon: <SmileOutlined style={{ color: "#108ee9" }}/>
                     
                 });
-                // TODO: simplejwt 관리
-                // history('/');
+
+                history('/');
+                
             }catch(error){
-                console.log(error.response);
+                console.log('error : ', error.response);
                 api.info({
                     message: '로그인 실패',
                     description: '유저 이메일, 패스워드를 확인해주세요.',
