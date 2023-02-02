@@ -4,13 +4,18 @@ import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
 import Axios from "axios";
 import { Navigate, useNavigate } from 'react-router-dom';
 import '../../style/accounts/Login.scss';
+import useLocalStorage from 'utils/useLocalStorage';
 
 
 
 const Login = () => {
     const history = useNavigate();
-    const [ fieldsErrors, setFieldsErrors ] = useState({});
+    const [ jwtToken, setJwtToken ] = useLocalStorage("jwtToken", "");
+    const [ refreshToken, setRefreshToken ] = useLocalStorage("refresh", "");
     const [api, setApi] = notification.useNotification();
+
+    console.log('jwtToken : ', jwtToken);
+    console.log('refreshToken : ', refreshToken);
 
     const onFinish = (values) => {
         console.log("inputs : ", values);
@@ -19,8 +24,14 @@ const Login = () => {
 
         const handleSubmit = async () => {
             try{
-                await Axios.post('http://localhost:8000/accounts/api/token/', data)
-                console.log('로그인 성공')
+                const response = await Axios.post('http://localhost:8000/accounts/api/token/', data)
+                console.log('response : ', response);
+                const { data : {access : jwtToken, refresh } } = response;
+
+                console.log(jwtToken, refresh);
+                setJwtToken(jwtToken);
+                setRefreshToken(refresh);
+
 
                 api.info({
                     message: '로그인 성공',
