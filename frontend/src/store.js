@@ -8,19 +8,15 @@ const AppContext = createContext();
 const reducer = (prevState, action) => {
     const { type } = action;
     if (type === SET_TOKEN){
-        const { payload: jwtToken } = action;
-        const newState = { ...prevState, jwtToken };
+        const { payload: jwtToken, refreshPayload: refreshToken } = action;
+        const newState = { ...prevState, jwtToken, refreshToken, isAuthenticated: true };
         return UpdateWithSideEffect(newState, (state, dispatch) => {
             setStorageItem("jwtToken", jwtToken);
-        });
-    } else if ( type === REFRESH_TOKEN){
-        const { payload: refreshToken } = action;
-        const newState = { ...prevState, refreshToken };
-        return UpdateWithSideEffect(newState, (state, dispatch) => {
             setStorageItem("refreshToken", refreshToken);
         });
-    } else if (type === DELETE_TOKEN){
-        const newState = { ...prevState, jwtToken: "", refresh: "" };
+    } 
+    else if (type === DELETE_TOKEN){
+        const newState = { ...prevState, jwtToken: "", refreshToken: "", isAuthenticated: false };
         return UpdateWithSideEffect(newState, (state, dispatch) => {
             setStorageItem("jwtToken", "");
             setStorageItem("refreshToken", "");
@@ -31,10 +27,14 @@ const reducer = (prevState, action) => {
 }
 
 export const AppProvider = ({ children }) => {
-    const [store, dispatch] = useReducerWithSideEffects(reducer, null, () => ({
-        jwtToken: getStorageItem("jwtToken", ""),
-        refreshToken: getStorageItem("refresh", ""),
-    }));
+    const jwtToken = getStorageItem("jwtToken", "");
+    const refreshToken = getStorageItem("refreshToken", "");
+
+    const [store, dispatch] = useReducerWithSideEffects(reducer, {
+        jwtToken,
+        refreshToken,
+        isAuthenticated: jwtToken.length > 0 && refreshToken.length > 0,
+    });
     return (
         <AppContext.Provider value={{ store, dispatch }}>
             { children }
@@ -50,10 +50,8 @@ export const useAppContext = () => {
 
 // Actions
 const SET_TOKEN = "APP/SET_TOKEN";
-const REFRESH_TOKEN = "APP/REFRESH_TOKEN";
 const DELETE_TOKEN = "APP/DELETE_TOKEN";
 
 // Actions Creators
-export const setToken = token => ({ type: SET_TOKEN, payload: token });
-export const refreshToken = token => ({ type: REFRESH_TOKEN, payload: token});
+export const setToken = (token, refreshToken) => ({ type: SET_TOKEN, payload: token, refreshPayload: refreshToken });
 export const deleteToken = () => ({ type: DELETE_TOKEN });

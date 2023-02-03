@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { Button, Form, Input, notification, Card } from 'antd';
 import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
 import Axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../style/accounts/Login.scss';
-import { setToken, refreshToken, useAppContext } from 'store';
+import { setToken, useAppContext } from 'store';
 
 
 
 const Login = () => {
     const { dispatch } = useAppContext();
+    const location = useLocation();
     const history = useNavigate();
     const [api, setApi] = notification.useNotification();
+    const { from: loginRedirectUrl } = location.state || { from: { pathname: '/'}};
 
     const onFinish = (values) => {
         console.log("inputs : ", values);
@@ -21,13 +23,13 @@ const Login = () => {
         const handleSubmit = async () => {
             try{
                 const response = await Axios.post('http://localhost:8000/accounts/api/token/', data)
-                const { data : {access : jwtToken, refresh } } = response;
+                const { data : {access : jwtToken, refresh: refreshToken } } = response;
                 
                 console.log('response : ', response);
-                console.log(jwtToken, refresh);
+                console.log(jwtToken, refreshToken);
 
-                dispatch(setToken(jwtToken));
-                dispatch(refreshToken(refresh));
+                dispatch(setToken(jwtToken, refreshToken));
+                // dispatch(setRefreshToken(refreshToken));
 
 
                 api.info({
@@ -36,8 +38,8 @@ const Login = () => {
                     
                 });
 
-                history('/');
-                
+                history(loginRedirectUrl);
+
             }catch(error){
                 console.log('error : ', error.response);
                 api.info({
