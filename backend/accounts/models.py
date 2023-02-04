@@ -73,7 +73,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number', 'date_of_birth', 'gender',]
+    REQUIRED_FIELDS = ['nickname', 'first_name', 'last_name', 'phone_number', 'date_of_birth', 'gender',]
 
     @property
     def name(self):
