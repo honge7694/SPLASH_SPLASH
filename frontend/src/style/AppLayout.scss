@@ -4,11 +4,14 @@
     grid-template-areas:
         'chat main side-menu';
     gap: 1rem;
+    padding-top: 50px;
     // margin: 10px auto;
 
     .chat{
         grid-area: chat;
         margin: 30px auto;
+        position: fixed;
+        left: 80px;
         .ant-card-body{
             min-width: 260px;
             max-height: 250px;
@@ -38,6 +41,13 @@
             align-items: center;
             grid-area: header;
             max-height: 53px;
+            padding: 30px;
+
+            position: fixed;
+            top: 0;
+            /* width: 100% */
+            left: 0;
+            right: 0;
 
             .page-title{
 
@@ -65,6 +75,8 @@
     .side-menu{
         grid-area: side-menu;
         margin: 30px auto;
+        position: fixed;
+        right: 117px;
         .menu{
             border: 1px solid rgba(5, 5, 5, 0.06);
             border-radius: 8px;

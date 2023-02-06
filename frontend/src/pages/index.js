@@ -4,6 +4,7 @@ import AppLayout from 'components/AppLayout';
 import Home from './Home';
 import AccountsRoutes from './accounts/index';
 import LoginRequiredRoute from 'utils/LoginRequiredRoute';
+import PostsRoutes from './post';
 
 
 const Root = () => {
@@ -14,6 +15,7 @@ const Root = () => {
                     <Route path="/" element={ <Home /> }></Route>
                 </Route>
                 <Route path="/accounts/*" element={ <AccountsRoutes /> }/>
+                <Route path='/post/*' element= { <PostsRoutes /> } />
             </Routes>
         </AppLayout>
     );
