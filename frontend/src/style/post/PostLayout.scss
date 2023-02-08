@@ -1,0 +1,33 @@
+.ant-carousel .slick-prev,
+.ant-carousel .slick-prev:hover{
+    left: 10px;
+    z-index: 2;
+    color: black;
+    font-size: 20px;
+    height: 30px;
+}
+
+.ant-carousel .slick-next,
+.ant-carousel .slick-next:hover {
+    right: 10px;
+    z-index: 2;
+    color: black;
+    font-size: 20px;
+    height: 30px;
+}
+
+.cardTitle{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cardAvatar{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .cardNicname{
+        color: rgba(0, 0, 0, 0.6);
+        font-size: large;
+    }
+}
