@@ -3,6 +3,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.permissions import AllowAny
 from .serializers import PostSerializer, PostImageSerializer
 from .models import Post, PostImage
+from .permissions import IsAuthorOrReadonly
 
 
 class PostListAPIView(ListCreateAPIView):
@@ -24,4 +25,4 @@ class PostDetailAPIView(RetrieveUpdateDestroyAPIView):
     '''
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthorOrReadonly, ]
