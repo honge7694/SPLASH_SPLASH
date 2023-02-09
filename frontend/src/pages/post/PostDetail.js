@@ -9,7 +9,7 @@ import { useAppContext } from 'store';
 
 const PostDetail = () => {
     const { id } = useParams();
-    const [post, setPost] = useState({});
+    const [post, setPost] = useState();
     const { store: token } = useAppContext();
     const history = useNavigate();
 

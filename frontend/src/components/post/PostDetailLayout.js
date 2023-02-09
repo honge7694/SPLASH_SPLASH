@@ -30,10 +30,10 @@ const PostDetailLayout = ({post}) => {
                     <div>
                         <div className="cardTitle">
                             <div>
-                                {title}
+                                { title }
                             </div>
                             <div>
-                                {created_at}
+                                { created_at }
                             </div>
                         </div>
                     </div>
@@ -59,19 +59,17 @@ const PostDetailLayout = ({post}) => {
                             <div>
                                 <Avatar
                                     icon={
-                                        "dd"
-                                        // FIXME: avatar_url렌더링늦는거 
-                                        // post.author.avatar_url && <img src={"http://localhost:8000" + post.author.avatar_url}/>
+                                        author.avatar_url && <img src={"http://localhost:8000" + post.author.avatar_url}/>
                                     }
                                     size='large'
                                 />
                             </div>
                             <div className='cardNickname'>
-                                {/* {author.nickname} */}
+                                { author.nickname }
                             </div>
                         </div>
                     }
-                    // title={post.author.nickname && post.author.nickname}
+                    title= {<>LIKE 0</>}
                     description={content}
                 />
             </Card>
