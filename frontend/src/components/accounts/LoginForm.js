@@ -11,7 +11,6 @@ const LoginForm = () => {
     const { dispatch } = useAppContext();
     const location = useLocation();
     const history = useNavigate();
-    const [api, setApi] = notification.useNotification();
     const { from: loginRedirectUrl } = location.state || { from: { pathname: '/'}};
 
     const onFinish = (values) => {
@@ -31,7 +30,7 @@ const LoginForm = () => {
                 // dispatch(setRefreshToken(refreshToken));
 
 
-                api.info({
+                notification.open({
                     message: '로그인 성공',
                     icon: <SmileOutlined style={{ color: "#108ee9" }}/>
                     
@@ -41,7 +40,7 @@ const LoginForm = () => {
 
             }catch(error){
                 console.log('error : ', error.response);
-                api.info({
+                notification.open({
                     message: '로그인 실패',
                     description: '유저 이메일, 패스워드를 확인해주세요.',
                     icon: <FrownOutlined style={{ color: "#fff333" }}/>
@@ -54,7 +53,6 @@ const LoginForm = () => {
 
     return (
         <div>
-            {setApi}
             <Card title="로그인">
                 <Form
                     onFinish={onFinish}
