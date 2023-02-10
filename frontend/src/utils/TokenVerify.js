@@ -13,10 +13,11 @@ const TokenVerify = async (token) => {
     try{
         const response = await Axios.post(apiUrl, data);
         console.log(response);
+        return response.status;
     }catch(error){
+        console.log(error);
         const newToken = TokenRefresh(refreshToken);
         return newToken;
-        // console.log(error);
     }
     
 }

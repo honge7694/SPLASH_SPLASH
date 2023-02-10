@@ -14,7 +14,6 @@ const LoginForm = () => {
     const { from: loginRedirectUrl } = location.state || { from: { pathname: '/'}};
 
     const onFinish = (values) => {
-        console.log("inputs : ", values);
         const { email, password } = values;
         const data = { email, password };
 
@@ -23,8 +22,8 @@ const LoginForm = () => {
                 const response = await Axios.post('http://localhost:8000/accounts/api/token/', data)
                 const { data : {access : jwtToken, refresh: refreshToken } } = response;
                 
-                console.log('response : ', response);
-                console.log(jwtToken, refreshToken);
+                // console.log('response : ', response);
+                // console.log(jwtToken, refreshToken);
 
                 dispatch(setToken(jwtToken, refreshToken));
                 // dispatch(setRefreshToken(refreshToken));
