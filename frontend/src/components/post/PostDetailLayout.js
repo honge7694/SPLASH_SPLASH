@@ -2,12 +2,13 @@ import React from 'react';
 import { Button, Carousel, Card, Avatar } from 'antd';
 import { LeftOutlined, RightOutlined, HeartOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import '../../style/post/PostLayout.scss';
+import TokenVerify from 'utils/TokenVerify';
+import { setToken, useAppContext } from 'store';
 
 
 const PostDetailLayout = ({post}) => {
-    console.log(post.images && post.images);
-    console.log(post)
     const { id, author, title, content, images, created_at, updated_at } = post;
+    const { store: token, dispatch } = useAppContext();
     
     // TODO: Like, Edit, Delete
     const handlerHeart = (e) => {
@@ -15,8 +16,16 @@ const PostDetailLayout = ({post}) => {
         console.log('heartClick');
     }
 
-    const handlerEdit = (e) => {
+    const handlerEdit = async (e) => {
         e.preventDefault();
+        const data = await TokenVerify(token);
+        if (data){
+            console.log("토큰 재발급");
+            dispatch(setToken(data, token['refreshToken']));
+
+        }
+        console.log("성공?");
+
     }
 
     const handlerDelete = (e) => {

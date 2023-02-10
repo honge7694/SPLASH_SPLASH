@@ -13,7 +13,7 @@ const PostList = () => {
     const [postList, setPostList] = useState([]);
     const history = useNavigate();
     const { store: token } = useAppContext();
-    console.log("PostList jwtToken : ", token['jwtToken']);
+
     useEffect(() => {
         const headers = { Authorization: `Bearer ${token['jwtToken']}`};
         Axios.get(apiUrl)
