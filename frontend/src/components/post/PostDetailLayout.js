@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Carousel, Card, Avatar, notification } from 'antd';
 import { LeftOutlined, RightOutlined, HeartOutlined, EditOutlined, DeleteOutlined, FrownOutlined } from "@ant-design/icons";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../style/post/PostLayout.scss';
 import TokenVerify from 'utils/TokenVerify';
 import { setToken, useAppContext } from 'store';
@@ -11,6 +11,8 @@ const PostDetailLayout = ({post}) => {
     const { id, author, title, content, images, created_at, updated_at } = post;
     const { store: token, dispatch } = useAppContext();
     const history = useNavigate();
+    const location = useLocation();
+
     
     // TODO: Like, Edit, Delete
     const handlerHeart = (e) => {
@@ -33,10 +35,11 @@ const PostDetailLayout = ({post}) => {
                 icon: <FrownOutlined style={{ color: "#fff333" }}/>
             });
 
-            history('/accounts/login');
+            history('/accounts/login', {state: {from: location}} );
             return;
         }
         console.log("성공?");
+        // TODO: 수정하기.
 
     }
 

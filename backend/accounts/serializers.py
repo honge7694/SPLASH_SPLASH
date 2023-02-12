@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import get_user_model
 
 
@@ -51,4 +52,21 @@ class SignupSerializer(serializers.Serializer):
         user.save()
 
         return user
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data['refresh'] =  str(refresh)
+        data['access'] = str(refresh.access_token)
+
+        data['user_info'] ={ 
+            'id': self.user.id,
+            'nickname' : self.user.nickname,
+        }
+        
+        return data
+
+
 
