@@ -50,7 +50,7 @@ const LoginForm = () => {
                 notification.open({
                     message: '로그인 실패',
                     description: '유저 이메일, 패스워드를 확인해주세요.',
-                    icon: <FrownOutlined style={{ color: "#fff333" }}/>
+                    icon: <FrownOutlined style={{ color: "red" }}/>
                 });
             }
         }

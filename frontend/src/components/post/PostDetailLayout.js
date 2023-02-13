@@ -1,27 +1,26 @@
 import React from 'react';
 import { Button, Carousel, Card, Avatar, notification } from 'antd';
-import { LeftOutlined, RightOutlined, HeartOutlined, EditOutlined, DeleteOutlined, FrownOutlined } from "@ant-design/icons";
+import { LeftOutlined, RightOutlined, HeartOutlined, EditOutlined, DeleteOutlined, FrownOutlined, SmileOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useRecoilValue } from "recoil";
+import Axios from "axios";
 import '../../style/post/PostLayout.scss';
 import TokenVerify from 'utils/TokenVerify';
 import { setToken, useAppContext } from 'store';
+import { userState } from 'state';
 
 
 const PostDetailLayout = ({post}) => {
     const { id, author, title, content, images, created_at, updated_at } = post;
     const { store: token, dispatch } = useAppContext();
+    const headers = { Authorization: `Bearer ${token['jwtToken']}`};
+    console.log(headers);
     const history = useNavigate();
     const location = useLocation();
+    const user = useRecoilValue(userState);
 
-    
-    // TODO: Like, Edit, Delete
-    const handlerHeart = (e) => {
-        e.preventDefault();
-        console.log('heartClick');
-    }
 
-    const handlerEdit = async (e) => {
-        e.preventDefault();
+    const userVerify = async () => {
         const data = await TokenVerify(token);
         console.log(data.length);
         if (data.length > 100){
@@ -32,19 +31,58 @@ const PostDetailLayout = ({post}) => {
             notification.open({
                 message: '로그인 만료',
                 description: '다시 로그인을 해주세요.',
-                icon: <FrownOutlined style={{ color: "#fff333" }}/>
+                icon: <FrownOutlined style={{ color: "red" }}/>
             });
 
             history('/accounts/login', {state: {from: location}} );
             return;
         }
-        console.log("성공?");
-        // TODO: 수정하기.
-
+    }
+    
+    // TODO: Like, Edit, Delete
+    const handlerHeart = (e) => {
+        e.preventDefault();
+        console.log('heartClick');
     }
 
-    const handlerDelete = (e) => {
+    const handlerEdit = (e, author) => {
         e.preventDefault();
+        userVerify();
+        console.log((author.author.id))
+        console.log(user['userId'])
+        // TODO: 수정하기.
+        if (author.author.id === user['userId']){
+            
+        } else{
+            notification.open({
+                message: '게시글 작성자가 아닙니다.',
+                description: '게시글을 수정할 권한이 없습니다.',
+                icon: <FrownOutlined style={{ color: "red" }}/>
+            });
+        }
+    }
+
+    const handlerDelete = async (e, author) => {
+        e.preventDefault();
+        userVerify();
+        
+        if (author.author.id === user['userId']){
+            const response = await Axios.delete(`http://localhost:8000/post/${id}/`, { headers });
+            console.log(response);
+            notification.open({
+                message: '게시글 삭제가 완료되었습니다.',
+                icon: <SmileOutlined style={{ color: "#108ee9" }}/>
+                
+            });
+
+            history('/post');
+        } else{
+            notification.open({
+                message: '게시글 작성자가 아닙니다.',
+                description: '게시글을 삭제할 권한이 없습니다.',
+                icon: <FrownOutlined style={{ color: "red" }}/>
+            });
+        }
     }
     
     return (
@@ -73,8 +111,8 @@ const PostDetailLayout = ({post}) => {
                 }
                 actions={[
                     <HeartOutlined onClick={handlerHeart}/>,
-                    <EditOutlined onClick={handlerEdit}/>,
-                    <DeleteOutlined onClick={handlerDelete}/>
+                    <EditOutlined onClick={(e) => {handlerEdit(e, {author})}}/>,
+                    <DeleteOutlined onClick={(e) => {handlerDelete(e, {author})}}/>
                 ]}
             >
                 <Card.Meta

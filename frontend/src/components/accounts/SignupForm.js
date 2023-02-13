@@ -39,7 +39,7 @@ const SignupForm = () => {
                     api.info({
                         message: '회원가입 실패',
                         description: '필드 에러를 확인해주세요.',
-                        icon: <FrownOutlined style={{ color: "#fff333" }}/>
+                        icon: <FrownOutlined style={{ color: "red" }}/>
                     });
                     const { data: fieldsErrorMessages } = error.response;
                     SetFieldsErrors(

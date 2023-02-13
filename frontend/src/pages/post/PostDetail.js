@@ -29,7 +29,7 @@ const PostDetail = () => {
                     notification.open({
                         message: '로그인 후 이용해주세요.',
                         description: '회원 정보를 확인할 수 없습니다.',
-                        icon: <FrownOutlined style={{ color: "#fff333" }}/>
+                        icon: <FrownOutlined style={{ color: "red" }}/>
                     });
 
                     history('/accounts/login');
