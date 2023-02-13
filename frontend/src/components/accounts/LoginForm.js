@@ -3,8 +3,10 @@ import { Button, Form, Input, notification, Card } from 'antd';
 import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
 import Axios from "axios";
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useSetRecoilState } from "recoil";
 import '../../style/accounts/Login.scss';
 import { setToken, useAppContext } from 'store';
+import { userState } from '../../state';
 
 
 const LoginForm = () => {
@@ -12,6 +14,7 @@ const LoginForm = () => {
     const location = useLocation();
     const history = useNavigate();
     const { from: loginRedirectUrl } = location.state || { from: { pathname: '/'}};
+    const setUser = useSetRecoilState(userState);
 
     const onFinish = (values) => {
         const { email, password } = values;
@@ -35,10 +38,15 @@ const LoginForm = () => {
                     
                 });
 
+                setUser({
+                    userId: response.data.user_info.id,
+                    userNickname: response.data.user_info.nickname,
+                });
+
                 history(loginRedirectUrl);
 
             }catch(error){
-                console.log('error : ', error.response);
+                console.log('error : ', error);
                 notification.open({
                     message: '로그인 실패',
                     description: '유저 이메일, 패스워드를 확인해주세요.',
