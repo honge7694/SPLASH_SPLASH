@@ -40,6 +40,7 @@ const PostDetailLayout = ({post}) => {
     // TODO: Like, Edit, Delete
     const handlerHeart = (e) => {
         e.preventDefault();
+        userVerify();
         console.log('heartClick');
     }
 
@@ -48,7 +49,7 @@ const PostDetailLayout = ({post}) => {
         userVerify();
 
         if (author.author.id === user['userId']){
-            
+            history('edit');
         } else{
             notification.open({
                 message: '게시글 작성자가 아닙니다.',

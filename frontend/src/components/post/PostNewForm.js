@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, Modal, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import getBase64FromFile from 'utils/base64';
@@ -9,6 +10,7 @@ import { useAppContext } from 'store';
 
 const PostNewLayout = () => {
     const { store: token } = useAppContext();
+    const history = useNavigate();
     const [fileList, setFileList] = useState([]);
     const [previewPhoto, setPreviewPhoto] = useState({
         visible: false,
@@ -45,6 +47,8 @@ const PostNewLayout = () => {
         const headers = { Authorization: `Bearer ${token['jwtToken']}`};
         const response = await Axios.post('http://localhost:8000/post/', formData, { headers });
         console.log(response);
+
+        history('/post');
     };
 
     const validateMessages = {
@@ -94,7 +98,7 @@ const PostNewLayout = () => {
                     </Upload>
                 </Form.Item>
 
-                <Form.Item  wrapperCol={{ offset: 8, span: 16, }}>
+                <Form.Item  style={{ margin: '0px auto' }}>
                     <Button type="primary" htmlType="submit">
                         작성완료
                     </Button>

@@ -28,7 +28,7 @@ class Post(TimeStampedModel):
 # 이미지 파일 경로 
 def image_upload_path(instance, filename):
     today = datetime.now()
-    return f"post/{today.year}/{today.month}/{today.day}/{instance.post.author}/{filename}"
+    return f"post/{today.year}/{today.month}/{today.day}/{instance.post.author.nickname}/{filename}"
 
 
 class PostImage(models.Model):
