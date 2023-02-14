@@ -14,11 +14,9 @@ const PostDetailLayout = ({post}) => {
     const { id, author, title, content, images, created_at, updated_at } = post;
     const { store: token, dispatch } = useAppContext();
     const headers = { Authorization: `Bearer ${token['jwtToken']}`};
-    console.log(headers);
     const history = useNavigate();
     const location = useLocation();
     const user = useRecoilValue(userState);
-
 
     const userVerify = async () => {
         const data = await TokenVerify(token);
@@ -48,9 +46,7 @@ const PostDetailLayout = ({post}) => {
     const handlerEdit = (e, author) => {
         e.preventDefault();
         userVerify();
-        console.log((author.author.id))
-        console.log(user['userId'])
-        // TODO: 수정하기.
+
         if (author.author.id === user['userId']){
             
         } else{
@@ -68,7 +64,7 @@ const PostDetailLayout = ({post}) => {
         
         if (author.author.id === user['userId']){
             const response = await Axios.delete(`http://localhost:8000/post/${id}/`, { headers });
-            console.log(response);
+
             notification.open({
                 message: '게시글 삭제가 완료되었습니다.',
                 icon: <SmileOutlined style={{ color: "#108ee9" }}/>

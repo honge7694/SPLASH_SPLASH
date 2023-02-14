@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Axios from 'axios';
-import { Avatar, Button, List, Space } from 'antd';
+import { Avatar, Button, List, Space, Card } from 'antd';
 import { StarOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 import { useAppContext } from 'store';
 import '../../style/post/PostList.scss';
 
 
-const apiUrl = 'http://localhost:8000/post/'
 
 const PostList = () => {
     const [postList, setPostList] = useState([]);
     const history = useNavigate();
     const { store: token } = useAppContext();
+    const apiUrl = 'http://localhost:8000/post/'
 
     useEffect(() => {
         const headers = { Authorization: `Bearer ${token['jwtToken']}`};
@@ -59,8 +59,20 @@ const PostList = () => {
         history(''+id);
     }
 
+    const handlerNew = (e) => {
+        e.preventDefault();
+        history('new');
+    }
+
     return (
-        <>
+        <Card
+            title={
+                <div className='PostList-Card-Title'>
+                    자유게시판
+                    <Button onClick={handlerNew}>글쓰기</Button>
+                </div>
+            }
+        >
             <List
                 itemLayout="vertical"
                 size="large"
@@ -71,11 +83,6 @@ const PostList = () => {
                 pageSize: 5,
                 }}
                 dataSource={data}
-                footer={
-                    <div>
-                        <Button>글쓰기</Button>
-                    </div>
-                }
                 renderItem={(item) => (
                     <List.Item
                         key={item.id['id']}
@@ -122,7 +129,7 @@ const PostList = () => {
                         </List.Item>
                 )}
             />
-        </>
+        </Card>
     );
 }
 
