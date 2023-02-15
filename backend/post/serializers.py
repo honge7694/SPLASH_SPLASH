@@ -22,10 +22,11 @@ class PostImageSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
     images = serializers.SerializerMethodField()
+    likes = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'content', 'author', 'images', 'created_at', 'updated_at']
+        fields = ['id', 'title', 'content', 'author', 'images', 'created_at', 'updated_at', 'likes']
 
     def get_images(self, obj):
         '''
@@ -46,5 +47,17 @@ class PostSerializer(serializers.ModelSerializer):
         for image_data in image_set.getlist('image'):
             PostImage.objects.create(post=instance, image=image_data)
 
-        return instance
-    
+    def get_likes(self, obj):
+        like = len(obj.like_user_set.all())
+        return like
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    '''
+    좋아요 기능
+    '''
+    author = AuthorSerializer(read_only=True)
+
+    class Meta:
+        model = Post
+        fields = ['like_user_set', 'author']

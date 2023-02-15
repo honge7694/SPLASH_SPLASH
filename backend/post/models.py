@@ -17,6 +17,7 @@ class Post(TimeStampedModel):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='my_post_set')
     title = models.CharField(max_length=200)
     content = models.TextField()
+    like_user_set = models.ManyToManyField(User, blank=True, related_name='like_post_set')
 
     class Meta:
         ordering = ["-id"]

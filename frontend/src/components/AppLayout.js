@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { MailOutlined } from '@ant-design/icons';
-import { Input, Menu } from 'antd';
-import { useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import Chat from './Chat';
 import SideMenu from './SideMenu';
 import '../style/AppLayout.scss';

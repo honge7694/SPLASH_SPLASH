@@ -5,6 +5,8 @@ import { notification } from 'antd';
 import Axios from 'axios';
 import PostDetailLayout from "../../components/post/PostDetailLayout";
 import { useAppContext } from 'store';
+import { useResetRecoilState } from "recoil";
+import { userState } from 'state';
 
 
 const PostDetail = () => {
@@ -12,6 +14,7 @@ const PostDetail = () => {
     const [post, setPost] = useState();
     const { store: token } = useAppContext();
     const history = useNavigate();
+    const resetUser = useResetRecoilState(userState);
 
     useEffect(() => {
         const headers = { Authorization: `Bearer ${token['jwtToken']}`};
@@ -31,7 +34,8 @@ const PostDetail = () => {
                         description: '회원 정보를 확인할 수 없습니다.',
                         icon: <FrownOutlined style={{ color: "red" }}/>
                     });
-
+                    
+                    resetUser();
                     history('/accounts/login');
                 }
                 
