@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Carousel, Card, Avatar, notification } from 'antd';
-import { LeftOutlined, RightOutlined, HeartOutlined, EditOutlined, DeleteOutlined, FrownOutlined, SmileOutlined } from "@ant-design/icons";
+import { LeftOutlined, RightOutlined, HeartTwoTone, HeartOutlined, EditOutlined, DeleteOutlined, FrownOutlined, SmileOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRecoilValue } from "recoil";
 import Axios from "axios";
@@ -10,14 +10,15 @@ import { setToken, useAppContext } from 'store';
 import { userState } from 'state';
 
 
-const PostDetailLayout = ({post}) => {
-    const { id, author, title, content, images, created_at, updated_at } = post;
+const PostDetailLayout = ({post, handleLike}) => {
+    console.log(post);
+    const { id, author, title, content, images, likes, is_like, created_at, updated_at } = post;
     const { store: token, dispatch } = useAppContext();
     const headers = { Authorization: `Bearer ${token['jwtToken']}`};
     const history = useNavigate();
     const location = useLocation();
     const user = useRecoilValue(userState);
-
+    
     const userVerify = async () => {
         const data = await TokenVerify(token);
         console.log(data.length);
@@ -37,13 +38,6 @@ const PostDetailLayout = ({post}) => {
         }
     }
     
-    // TODO: Like, Edit, Delete
-    const handlerHeart = (e) => {
-        e.preventDefault();
-        userVerify();
-        console.log('heartClick');
-    }
-
     const handlerEdit = (e, author) => {
         e.preventDefault();
         userVerify();
@@ -100,6 +94,7 @@ const PostDetailLayout = ({post}) => {
                 cover={
                     <Carousel dots={false} arrows prevArrow={<LeftOutlined />} nextArrow={<RightOutlined />} >
                         {images && images.map(image => (
+                            console.log(image),
                             <div key={image.image}>
                                 <img  src={"http://localhost:8000/media/" + image.image }/>
                             </div>
@@ -107,7 +102,11 @@ const PostDetailLayout = ({post}) => {
                     </Carousel>
                 }
                 actions={[
-                    <HeartOutlined onClick={handlerHeart}/>,
+                    is_like ? (
+                        <HeartTwoTone twoToneColor="#eb2f96" onClick={()=> handleLike()} /> 
+                    ):(
+                        <HeartOutlined onClick={()=> handleLike()}/>
+                    ),
                     <EditOutlined onClick={(e) => {handlerEdit(e, {author})}}/>,
                     <DeleteOutlined onClick={(e) => {handlerDelete(e, {author})}}/>
                 ]}
@@ -128,7 +127,7 @@ const PostDetailLayout = ({post}) => {
                             </div>
                         </div>
                     }
-                    title= {<>LIKE 0</>}
+                    title= {<>LIKE {likes}</>}
                     description={content}
                 />
             </Card>

@@ -35,12 +35,12 @@ const PostNewLayout = () => {
 
     const handleFinish = async (fieldValues) => {
         console.log('fieldValues : ', fieldValues);
-        const { title, content, image: { fileList }} = fieldValues;
+        const { title, content, image } = fieldValues;
 
         const formData = new FormData();
         formData.append("title", title);
         formData.append("content", content);
-        fileList.forEach(file => {
+        image.fileList && image.fileList.forEach(file => {
             formData.append("image", file.originFileObj);
         });
 

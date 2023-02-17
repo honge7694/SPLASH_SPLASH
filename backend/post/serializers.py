@@ -23,10 +23,11 @@ class PostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
     images = serializers.SerializerMethodField()
     likes = serializers.SerializerMethodField()
+    is_like = serializers.SerializerMethodField('is_like_field')
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'content', 'author', 'images', 'created_at', 'updated_at', 'likes']
+        fields = ['id', 'title', 'content', 'author', 'images', 'created_at', 'updated_at', 'likes', 'is_like']
 
     def get_images(self, obj):
         '''
@@ -46,10 +47,18 @@ class PostSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("이미지는 8개까지만 가능합니다.")
         for image_data in image_set.getlist('image'):
             PostImage.objects.create(post=instance, image=image_data)
+        
+        return instance
 
     def get_likes(self, obj):
         like = len(obj.like_user_set.all())
         return like
+
+    def is_like_field(self, obj):
+        if 'request' in self.context:
+            user = self.context['request'].user
+            return obj.like_user_set.filter(pk=user.pk).exists()
+        return False
 
 
 class LikeSerializer(serializers.ModelSerializer):

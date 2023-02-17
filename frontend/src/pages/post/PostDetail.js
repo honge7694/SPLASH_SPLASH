@@ -15,10 +15,9 @@ const PostDetail = () => {
     const { store: token } = useAppContext();
     const history = useNavigate();
     const resetUser = useResetRecoilState(userState);
+    const headers = { Authorization: `Bearer ${token['jwtToken']}`};
 
     useEffect(() => {
-        const headers = { Authorization: `Bearer ${token['jwtToken']}`};
-
         async function fetchPostData() { 
             const apiUrl = 'http://localhost:8000/post/'+ id +'/'
             try{
@@ -44,11 +43,23 @@ const PostDetail = () => {
         fetchPostData();
     }, []);
 
+
+    const handleLike = async () => {
+        console.log('headers : ', headers);
+        try{
+            const response = await Axios.post(`http://localhost:8000/post/${id}/like/`, '', { headers });
+            const { data } = await Axios.get('http://localhost:8000/post/'+ id +'/', { headers });
+            setPost(data);
+        }catch(error){
+            console.log('error : ', error);
+        }
+    }
+
     // console.log(post);
 
     return (
         <>
-            {post && <PostDetailLayout post={post}/> }
+            {post && <PostDetailLayout post={post} handleLike={handleLike}/> }
         </>
     );
 }

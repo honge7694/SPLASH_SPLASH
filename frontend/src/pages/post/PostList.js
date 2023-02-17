@@ -11,35 +11,37 @@ const PostList = () => {
     const [postList, setPostList] = useState([]);
     const history = useNavigate();
     const { store: token } = useAppContext();
-    const apiUrl = 'http://localhost:8000/post/'
+    const apiUrl = 'http://localhost:8000/post/';
+    const headers = { Authorization: `Bearer ${token['jwtToken']}`};
 
     useEffect(() => {
-        const headers = { Authorization: `Bearer ${token['jwtToken']}`};
-        Axios.get(apiUrl)
-            .then(response => {
-                const { data } = response;
-                console.log('PostList loaded response : ', response)
+        async function fetchPostList() { 
+            try{
+                const {data} = await Axios.get(apiUrl, { headers })
                 setPostList(data);
-            })
-            .catch(error => {
-                console.log('error : ', error);
-            })
+            }catch(error){
+                console.log("error : ", error);
+            }
+        }
+        fetchPostList();
     }, [])
 
-    const data = postList.map((post) => {
-        const { id, title, content, author, images, created_at, updated_at } = post;
-        return (
-            ({
-                id: { id },
-                title: { title },
-                content: { content },
-                author: { author },
-                images: { images },
-                created_at: { created_at },
-                updated_at: { updated_at },
-            })
-        )
-    })
+    // const data = postList.map((post) => {
+    //     const { id, title, content, author, images, likes, is_like, created_at, updated_at } = post;
+    //     return (
+    //         ({
+    //             id: { id },
+    //             title: { title },
+    //             content: { content },
+    //             author: { author },
+    //             images: { images },
+    //             likes: { likes },
+    //             is_like: { is_like },
+    //             created_at: { created_at },
+    //             updated_at: { updated_at },
+    //         })
+    //     )
+    // });
 
     // console.log('data : ', data);
     // console.log('data : ', data[21].images.images[0]['image']);
@@ -47,6 +49,17 @@ const PostList = () => {
     const handlerNew = (e) => {
         e.preventDefault();
         history('new');
+    }
+
+    const handleLike = async (post) => {
+        console.log(post.item.id);
+        try{
+            const response = await Axios.post(`http://localhost:8000/post/${post.item.id}/like/`, '', { headers });
+            const { data } = await Axios.get(apiUrl, { headers });
+            setPostList(data);
+        }catch(error){
+            console.log('error : ', error);
+        }
     }
 
     return (
@@ -58,7 +71,7 @@ const PostList = () => {
                 </div>
             }
         >
-            <PostListLayout data={data}/>
+            {postList &&<PostListLayout data={postList} handleLike={handleLike}/>}
         </Card>
     );
 }

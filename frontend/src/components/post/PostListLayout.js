@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, List, Space } from 'antd';
-import { LikeOutlined, MessageOutlined } from '@ant-design/icons';
+import { HeartTwoTone, HeartOutlined, MessageOutlined } from '@ant-design/icons';
 
 
-const PostListLayout = ({data}) => {
+const PostListLayout = ({data, handleLike}) => {
+    console.log('data : ', data);
     const history = useNavigate();
 
     const IconText = ({ icon, text }) => (
@@ -34,15 +35,23 @@ const PostListLayout = ({data}) => {
                 }}
                 dataSource={data}
                 renderItem={(item) => (
+                    console.log(item.is_like),
                     <List.Item
-                        key={item.id['id']}
+                        key={item.id}
                         actions={[
                             // TODO: 댓글, 좋아요 수정
-                            <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
+                            <IconText icon={() => item.is_like ? (
+                                    console.log(item.is_like),
+                                    <HeartTwoTone twoToneColor="#eb2f96" onClick={()=> handleLike({item})} /> 
+                                ):(
+                                    console.log(item.id),
+                                    <HeartOutlined onClick={()=> handleLike({item})}/>
+                                )} 
+                                text={item.likes} key="list-vertical-like-o" />,
                             <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
                         ]}
                         extra={
-                            item.images.images.length === 0 ? (
+                            item.images.length === 0 ? (
                                 <img
                                     width={180}
                                     height={120}
@@ -53,23 +62,23 @@ const PostListLayout = ({data}) => {
                                 <img 
                                     width={180} 
                                     height={120} 
-                                    src={"http://localhost:8000/media/" + item.images.images[0]['image']}
+                                    src={"http://localhost:8000/media/" + item.images[0]['image']}
                                     alt="logo"
                                 /> 
                             )
                         }
                     >
-                        <a href="#" onClick={ (e) => handlerOnClick(e, item.id.id) }>
+                        <a href="#" onClick={ (e) => handlerOnClick(e, item.id) }>
                             <List.Item.Meta
-                                avatar={<Avatar size='large' icon={ <img src={"http://localhost:8000" + item.author.author['avatar_url']}/> } />}
+                                avatar={<Avatar size='large' icon={ <img src={"http://localhost:8000" + item.author.avatar_url}/> } />}
                                 title={item.title['title']}
                                 description={
                                     <div>
                                         <div>
-                                            {item.author.author['nickname']}
+                                            {item.author.nickname}
                                         </div>
                                         <div>
-                                            {item.created_at['created_at']}
+                                            {item.created_at}
                                         </div>
                                     </div>}  
                                 style={{ alignItems: "center" }}
