@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Post, PostImage
+from .models import Post, PostImage, Comment
 
 
 User = get_user_model()
@@ -24,10 +24,11 @@ class PostSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     likes = serializers.SerializerMethodField()
     is_like = serializers.SerializerMethodField('is_like_field')
+    comments = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'content', 'author', 'images', 'created_at', 'updated_at', 'likes', 'is_like']
+        fields = ['id', 'title', 'content', 'author', 'images', 'created_at', 'updated_at', 'likes', 'is_like', 'comments']
 
     def get_images(self, obj):
         '''
@@ -59,6 +60,10 @@ class PostSerializer(serializers.ModelSerializer):
             user = self.context['request'].user
             return obj.like_user_set.filter(pk=user.pk).exists()
         return False
+    
+    def get_comments(self, obj):
+        comment = len(obj.comment_set.all())
+        return comment
 
 
 class LikeSerializer(serializers.ModelSerializer):
@@ -70,3 +75,14 @@ class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['like_user_set', 'author']
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    '''
+    댓글 기능
+    '''
+    author = AuthorSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'post', 'author', 'content', 'created_at']

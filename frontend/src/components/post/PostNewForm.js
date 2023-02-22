@@ -40,7 +40,7 @@ const PostNewLayout = () => {
         const formData = new FormData();
         formData.append("title", title);
         formData.append("content", content);
-        image.fileList && image.fileList.forEach(file => {
+        image && image.fileList.forEach(file => {
             formData.append("image", file.originFileObj);
         });
 

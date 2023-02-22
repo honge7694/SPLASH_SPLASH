@@ -46,3 +46,12 @@ class PostImage(models.Model):
         else:
             return 
 
+
+class Comment(TimeStampedModel):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    content = models.TextField()
+
+    class Meta:
+        ordering = ["-id"]
+

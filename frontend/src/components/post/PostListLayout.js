@@ -71,7 +71,7 @@ const PostListLayout = ({data, handleLike}) => {
                         <a href="#" onClick={ (e) => handlerOnClick(e, item.id) }>
                             <List.Item.Meta
                                 avatar={<Avatar size='large' icon={ <img src={"http://localhost:8000" + item.author.avatar_url}/> } />}
-                                title={item.title['title']}
+                                title={item.title}
                                 description={
                                     <div>
                                         <div>
