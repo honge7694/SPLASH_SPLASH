@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Carousel, Card, Avatar, notification } from 'antd';
+import { Button, Carousel, Card, Avatar, notification, Tooltip } from 'antd';
 import { LeftOutlined, RightOutlined, HeartTwoTone, HeartOutlined, EditOutlined, DeleteOutlined, FrownOutlined, SmileOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRecoilValue } from "recoil";
 import Axios from "axios";
+import moment from "moment";
 import '../../style/post/PostLayout.scss';
 import TokenVerify from 'utils/TokenVerify';
 import { setToken, useAppContext } from 'store';
@@ -85,9 +86,9 @@ const PostDetailLayout = ({post, handleLike}) => {
                             <div>
                                 { title }
                             </div>
-                            <div>
-                                { created_at }
-                            </div>
+                            <Tooltip title={moment(created_at).format('YYYY-MM-DD HH:mm')}>
+                                {moment(created_at).fromNow()}
+                            </Tooltip>
                         </div>
                     </div>
                 )}

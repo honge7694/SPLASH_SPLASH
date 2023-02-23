@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, List, Space } from 'antd';
 import { HeartTwoTone, HeartOutlined, MessageOutlined } from '@ant-design/icons';
+import moment from "moment";
 
 
 const PostListLayout = ({data, handleLike}) => {
@@ -48,7 +49,7 @@ const PostListLayout = ({data, handleLike}) => {
                                     <HeartOutlined onClick={()=> handleLike({item})}/>
                                 )} 
                                 text={item.likes} key="list-vertical-like-o" />,
-                            <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                            <IconText icon={MessageOutlined} text={item.comments} key="list-vertical-message" />,
                         ]}
                         extra={
                             item.images.length === 0 ? (
@@ -78,7 +79,7 @@ const PostListLayout = ({data, handleLike}) => {
                                             {item.author.nickname}
                                         </div>
                                         <div>
-                                            {item.created_at}
+                                            {moment(item.created_at).format("YYYY-MM-DD")}
                                         </div>
                                     </div>}  
                                 style={{ alignItems: "center" }}

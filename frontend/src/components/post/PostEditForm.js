@@ -9,7 +9,6 @@ import { useAppContext } from 'store';
 const PostEditForm = ({post}) => {
     console.log(post)
     const { title, content, images } = post;
-    console.log(images[0].image);
     const { store: token } = useAppContext();
     const [fileList, setFileList] = useState([]);
     const [previewPhoto, setPreviewPhoto] = useState({

@@ -7,6 +7,7 @@ import PostDetailLayout from "../../components/post/PostDetailLayout";
 import { useAppContext } from 'store';
 import { useResetRecoilState } from "recoil";
 import { userState } from 'state';
+import CommentList from 'components/post/CommentList';
 
 
 const PostDetail = () => {
@@ -60,6 +61,7 @@ const PostDetail = () => {
     return (
         <>
             {post && <PostDetailLayout post={post} handleLike={handleLike}/> }
+            {post && <CommentList />}
         </>
     );
 }
