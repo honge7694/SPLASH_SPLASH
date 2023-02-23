@@ -66,3 +66,13 @@ class CommentAPIView(ListCreateAPIView):
         post = get_object_or_404(Post, pk=self.kwargs['post_pk'])
         serializer.save(author=self.request.user, post=post)
         return super().perform_create(serializer)
+
+
+class CommentDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(pk=self.kwargs['pk'])
+        return qs
