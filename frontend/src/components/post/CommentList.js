@@ -57,7 +57,7 @@ const CommentList = () => {
                         </Button>
                     </div>
                 {commentList && commentList.map(comment => (
-                    <Comment key={comment.id} comment={comment} />
+                    <Comment key={comment.id} comment={comment} setCommentList={setCommentList} postId={id} />
                 ))}
             
             </Card>

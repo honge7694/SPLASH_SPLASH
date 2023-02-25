@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-import { Button, Card } from 'antd';
+import { Button, Card, notification } from 'antd';
+import { FrownOutlined } from '@ant-design/icons';
+import { useResetRecoilState } from "recoil";
+import { userState } from 'state';
 import { useAppContext } from 'store';
 import '../../style/post/PostList.scss';
 import PostListLayout from 'components/post/PostListLayout';
@@ -11,6 +14,7 @@ const PostList = () => {
     const [postList, setPostList] = useState([]);
     const history = useNavigate();
     const { store: token } = useAppContext();
+    const resetUser = useResetRecoilState(userState);
     const apiUrl = 'http://localhost:8000/post/';
     const headers = { Authorization: `Bearer ${token['jwtToken']}`};
 
@@ -21,6 +25,17 @@ const PostList = () => {
                 setPostList(data);
             }catch(error){
                 console.log("error : ", error);
+                if (error.response.status === 403){
+                    
+                    notification.open({
+                        message: '로그인 후 이용해주세요.',
+                        description: '회원 정보를 확인할 수 없습니다.',
+                        icon: <FrownOutlined style={{ color: "red" }}/>
+                    });
+                    
+                    resetUser();
+                    history('/accounts/login');
+                }
             }
         }
         fetchPostList();
