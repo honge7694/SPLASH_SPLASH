@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Carousel, Card, Avatar, notification, Tooltip } from 'antd';
-import { LeftOutlined, RightOutlined, HeartTwoTone, HeartOutlined, EditOutlined, DeleteOutlined, FrownOutlined, SmileOutlined } from "@ant-design/icons";
+import { LeftOutlined, RightOutlined, HeartTwoTone, HeartOutlined, EditOutlined, DeleteOutlined, MenuOutlined, FrownOutlined, SmileOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRecoilValue } from "recoil";
 import Axios from "axios";
@@ -102,15 +102,29 @@ const PostDetailLayout = ({post, handleLike}) => {
                         ))}
                     </Carousel>
                 }
-                actions={[
-                    is_like ? (
-                        <HeartTwoTone twoToneColor="#eb2f96" onClick={()=> handleLike()} /> 
+                actions={
+                    author.id === user['userId'] ? (
+                        [
+                            is_like ? (
+                                <HeartTwoTone twoToneColor="#eb2f96" onClick={()=> handleLike()} /> 
+                            ):(
+                                <HeartOutlined onClick={()=> handleLike()}/>
+                            ),
+                            <MenuOutlined onClick={() => history('/post')}/>,
+                            <EditOutlined onClick={(e) => {handlerEdit(e, {author})}}/>,
+                            <DeleteOutlined onClick={(e) => {handlerDelete(e, {author})}}/>
+                        ]
                     ):(
-                        <HeartOutlined onClick={()=> handleLike()}/>
-                    ),
-                    <EditOutlined onClick={(e) => {handlerEdit(e, {author})}}/>,
-                    <DeleteOutlined onClick={(e) => {handlerDelete(e, {author})}}/>
-                ]}
+                        [
+                            is_like ? (
+                                <HeartTwoTone twoToneColor="#eb2f96" onClick={()=> handleLike()} /> 
+                            ):(
+                                <HeartOutlined onClick={()=> handleLike()}/>
+                            ),
+                            <MenuOutlined onClick={() => history('/post')}/>,
+                        ]
+                    )
+                }
             >
                 <Card.Meta
                     avatar={
