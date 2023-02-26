@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('post/', include('post.urls')),
+    path('meet/', include('meet.urls')),
     path('identicon/image/<path:data>/', pydenticon_image, name='pydenticon_image'),
 ]
 
