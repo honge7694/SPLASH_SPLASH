@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, } from 'react';
 import { List, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const MeetListLayout = ({data}) => {
     console.log(data);
     const history = useNavigate();
-    
+
     const handlerOnClick = (e, id) => {
         e.preventDefault();
         history(''+id);
@@ -17,6 +17,12 @@ const MeetListLayout = ({data}) => {
         <>
             <List
                 dataSource={data}
+                pagination={{
+                    onChange: (page) => {
+                        console.log(page);
+                    },
+                    pageSize: 5,
+                }}
                 renderItem={(item) => (
                     <List.Item>
                         <a href="#" onClick={ (e) => handlerOnClick(e, item.id) }>
