@@ -6,3 +6,6 @@ class MeetingPostAPIView(ListCreateAPIView):
     queryset = MeetingPost.objects.all()
     serializer_class = MeetingPostSerializer
     
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+        return super().perform_create(serializer)

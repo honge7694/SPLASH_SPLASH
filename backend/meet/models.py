@@ -10,7 +10,16 @@ class TimeStampModel(models.Model):
 
 
 class MeetingPost(TimeStampModel):
+    class StatusChoices(models.TextChoices):
+        success = 'success', '모집중'
+        danger = 'warning', '모집종료'
+
+
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     content = models.TextField()
+    date_at = models.DateField(null=True)
+    status = models.CharField(max_length=20, choices=StatusChoices.choices)
 
+    class Meta:
+        ordering = ['-id']

@@ -11,7 +11,7 @@ class AuthorSerializer(serializers.Serializer):
         fields = ['id', 'email', 'name', 'nickname', 'avatar_url']
 
 
-class MeetingPostSerializer(serializers.Serializer):
+class MeetingPostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
     class Meta:
         model = MeetingPost

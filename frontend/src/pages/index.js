@@ -6,6 +6,7 @@ import Home from './Home';
 import AccountsRoutes from './accounts/index';
 import LoginRequiredRoute from 'utils/LoginRequiredRoute';
 import PostsRoutes from './post';
+import MeetsRoutes from './meet';
 
 
 const Root = () => {
@@ -18,6 +19,7 @@ const Root = () => {
                     </Route>
                     <Route path="/accounts/*" element={ <AccountsRoutes /> }/>
                     <Route path='/post/*' element= { <PostsRoutes /> } />
+                    <Route path='/meet/*' element={ <MeetsRoutes/> } />
                 </Routes>
             </AppLayout>
         </RecoilRoot>
