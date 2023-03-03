@@ -8,6 +8,7 @@ import moment from "moment";
 import TokenVerify from 'utils/TokenVerify';
 import { setToken, useAppContext } from 'store';
 import { userState } from 'state';
+import Map from './Map';
 
 
 const MeetDetailLayout = ({meet}) => {
@@ -93,7 +94,9 @@ const MeetDetailLayout = ({meet}) => {
                 )}
                 cover={
                     // TODO: 카카오지도 api 띄우기.
-                    []
+                    [
+                        <Map/>
+                    ]
                 }
                 actions={[]
                     // TODO: 모임 참석, 수정, 삭제 버튼
