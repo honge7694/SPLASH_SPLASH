@@ -15,4 +15,4 @@ class MeetingPostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
     class Meta:
         model = MeetingPost
-        fields = ['id', 'author', 'title', 'content', 'status', 'date_at', 'created_at', 'updated_at']
+        fields = ['id', 'author', 'title', 'content', 'place', 'place_lat', 'place_lng', 'status', 'date_at', 'time_at', 'created_at', 'updated_at']

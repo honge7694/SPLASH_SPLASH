@@ -18,7 +18,11 @@ class MeetingPost(TimeStampModel):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     content = models.TextField()
+    place = models.CharField(max_length=255)
+    place_lat = models.CharField(max_length=100)
+    place_lng = models.CharField(max_length=100)
     date_at = models.DateField(null=True)
+    time_at = models.TimeField(null=True)
     status = models.CharField(max_length=20, choices=StatusChoices.choices)
 
     class Meta:
