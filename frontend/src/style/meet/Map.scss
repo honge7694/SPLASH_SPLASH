@@ -1,16 +1,17 @@
 #MapSection {
     display: flex;
     height: 600px;
-}
-
+    margin-bottom: 1.5rem;
+    
     #map{
         width: 100%;
+        max-width: 970px;
         height: 600px;
-        max-height: 600px;
         position: absolute;
         overflow: hidden;
         border-radius: 20px;
     }
+}
 
     #menuDiv {
         display: flex;

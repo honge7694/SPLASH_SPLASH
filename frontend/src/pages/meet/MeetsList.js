@@ -42,7 +42,7 @@ const MeetsList = () => {
     }, []);
 
     const handlerNew = () => {
-
+        history('new')
     }
 
     return (

@@ -6,7 +6,7 @@ import '../../style/meet/Map.scss';
 
 const { kakao } = window;
 
-const Map = () => {
+const Map = ({ changeLat, changeLng, changePlace }) => {
 	const [search, setSearch] = useState("");
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -144,6 +144,10 @@ const Map = () => {
                         map.panTo(placePosition);
                         map.setLevel(4, {animate: true});
                         console.log('Lat : ', placePosition.La, 'Lng : ', placePosition.Ma, title);
+                        
+                        changePlace(title);
+                        changeLat(placePosition.La);
+                        changeLng(placePosition.Ma);
                     });
                 })(marker, places[i].place_name);
         
