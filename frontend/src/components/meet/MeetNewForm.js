@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, DatePicker, Form, Input, Modal, Select, TimePicker } from 'antd';
 import Axios from 'axios';
 import { useAppContext } from 'store';
-import Map from './Map';
+import WriteMap from './WriteMap';
 
 
 const MeetNewForm = () => {
@@ -53,7 +53,7 @@ const MeetNewForm = () => {
     
     return (
         <>
-            <Map changeLat={changeLat} changeLng={changeLng} changePlace={changePlace} />
+            <WriteMap changeLat={changeLat} changeLng={changeLng} changePlace={changePlace} />
             
             <Form
                 onFinish={handleFinish}
@@ -69,7 +69,7 @@ const MeetNewForm = () => {
                 ]} hasFeedback>
                     <Input />
                 </Form.Item>
-                
+
                 <Form.Item name="title" label="title" rules={[  
                     {
                         message: '제목을 입력해주세요.',

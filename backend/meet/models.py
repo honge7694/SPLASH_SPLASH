@@ -23,6 +23,7 @@ class MeetingPost(TimeStampModel):
     date_at = models.DateField(null=True)
     time_at = models.TimeField(null=True)
     status = models.CharField(max_length=20, choices=StatusChoices.choices, default='success')
+    is_attendance = models.ManyToManyField(User, blank=True, related_name='attendance_meet_set')
 
     class Meta:
         ordering = ['-id']

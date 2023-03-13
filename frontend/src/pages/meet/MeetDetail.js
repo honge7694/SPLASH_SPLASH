@@ -45,7 +45,7 @@ const MeetDetail = () => {
 
     return (
         <>
-            {meet && <MeetDetailLayout meet={meet} /> }
+            {meet && <MeetDetailLayout meet={meet} setMeet={setMeet} /> }
         </>
     );
 }

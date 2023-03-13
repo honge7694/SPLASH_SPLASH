@@ -6,7 +6,7 @@ import '../../style/meet/Map.scss';
 
 const { kakao } = window;
 
-const Map = ({ changeLat, changeLng, changePlace }) => {
+const WriteMap = ({ changeLat, changeLng, changePlace }) => {
 	const [search, setSearch] = useState("");
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -146,8 +146,8 @@ const Map = ({ changeLat, changeLng, changePlace }) => {
                         console.log('Lat : ', placePosition.La, 'Lng : ', placePosition.Ma, title);
                         
                         changePlace(title);
-                        changeLat(placePosition.La);
-                        changeLng(placePosition.Ma);
+                        changeLat(placePosition.Ma);
+                        changeLng(placePosition.La);
                     });
                 })(marker, places[i].place_name);
         
@@ -318,4 +318,4 @@ const Map = ({ changeLat, changeLng, changePlace }) => {
     );
 };
 
-export default Map;
+export default WriteMap;

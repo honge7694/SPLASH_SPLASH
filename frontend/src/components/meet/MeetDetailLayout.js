@@ -8,12 +8,12 @@ import moment from "moment";
 import TokenVerify from 'utils/TokenVerify';
 import { setToken, useAppContext } from 'store';
 import { userState } from 'state';
-import Map from './Map';
+import DetailMap from './DetailMap';
 
 
-const MeetDetailLayout = ({meet}) => {
+const MeetDetailLayout = ({meet, setMeet}) => {
     console.log(meet);
-    const { id, author: {avatar_url, email, id: user_id, name, nickname}, title, content, status, date_at, created_at, updated_at } = meet;
+    const { id, author: {avatar_url, email, id: user_id, name, nickname}, title, content, status, place, place_lat, place_lng, date_at, time_at, created_at, updated_at, is_attendance, attendance } = meet;
     const { store: token, dispatch } = useAppContext();
     const headers = { Authorization: `Bearer ${token['jwtToken']}`};
     const history = useNavigate();
@@ -36,6 +36,17 @@ const MeetDetailLayout = ({meet}) => {
 
             history('/accounts/login', {state: {from: location}} );
             return;
+        }
+    }
+
+    const handleLike = async () => {
+        try{
+            const response = await Axios.post(`http://localhost:8000/meet/${id}/attendance/`, '', { headers })
+            const { data } = await Axios.get(`http://localhost:8000/meet/${id}/`, { headers });
+            setMeet(data);
+
+        }catch(error){
+            console.log(error);
         }
     }
     
@@ -93,34 +104,33 @@ const MeetDetailLayout = ({meet}) => {
                     </div>
                 )}
                 cover={
-                    // TODO: 카카오지도 api 띄우기.
                     [
-                        <Map/>
+                        <DetailMap lat={place_lat} lng={place_lng}/>
                     ]
                 }
-                actions={[]
-                    // TODO: 모임 참석, 수정, 삭제 버튼
-                    // author.id === user['userId'] ? (
-                    //     [
-                    //         is_like ? (
-                    //             <HeartTwoTone twoToneColor="#eb2f96" onClick={()=> handleLike()} /> 
-                    //         ):(
-                    //             <HeartOutlined onClick={()=> handleLike()}/>
-                    //         ),
-                    //         <MenuOutlined onClick={() => history('/post')}/>,
-                    //         <EditOutlined onClick={(e) => {handlerEdit(e, {author})}}/>,
-                    //         <DeleteOutlined onClick={(e) => {handlerDelete(e, {author})}}/>
-                    //     ]
-                    // ):(
-                    //     [
-                    //         is_like ? (
-                    //             <HeartTwoTone twoToneColor="#eb2f96" onClick={()=> handleLike()} /> 
-                    //         ):(
-                    //             <HeartOutlined onClick={()=> handleLike()}/>
-                    //         ),
-                    //         <MenuOutlined onClick={() => history('/post')}/>,
-                    //     ]
-                    // )
+                actions={
+                    // TODO: 수정
+                    user_id === user['userId'] ? (
+                        [
+                            is_attendance ? (
+                                <HeartTwoTone twoToneColor="#eb2f96" onClick={()=> handleLike()} /> 
+                            ):(
+                                <HeartOutlined onClick={()=> handleLike()}/>
+                            ),
+                            <MenuOutlined onClick={() => history('/meet')}/>,
+                            <EditOutlined onClick={(e) => {handlerEdit(e, {user_id})}}/>,
+                            <DeleteOutlined onClick={(e) => {handlerDelete(e, {user_id})}}/>
+                        ]
+                    ):(
+                        [
+                            is_attendance ? (
+                                <HeartTwoTone twoToneColor="#eb2f96" onClick={()=> handleLike()} /> 
+                            ):(
+                                <HeartOutlined onClick={()=> handleLike()}/>
+                            ),
+                            <MenuOutlined onClick={() => history('/meet')}/>,
+                        ]
+                    )
                 }
             >
                 <Card.Meta
@@ -137,12 +147,17 @@ const MeetDetailLayout = ({meet}) => {
                             <div className='cardNickname'>
                                 { nickname }
                             </div>
+                            <div>
+                                <Tooltip title={attendance}>
+                                    [참석자명단]
+                                </Tooltip>
+                            </div>
                         </div>
                     }
                     title= {
-                        <>
-                            <Typography.Text type={'danger'}>[모임날짜]</Typography.Text> {date_at}
-                        </>
+                        <div>
+                            <Typography.Text type={'danger'}>[모임장소 및 날짜]</Typography.Text> {place} / {date_at} {time_at} 
+                        </div>
                     }
                     description={content}
                 />

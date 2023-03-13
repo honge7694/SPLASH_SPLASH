@@ -42,7 +42,8 @@
             grid-area: header;
             max-height: 53px;
             padding: 30px;
-
+            z-index: 99;
+            background-color: white;
             position: fixed;
             top: 0;
             /* width: 100% */
