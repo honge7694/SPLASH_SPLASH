@@ -78,7 +78,7 @@ const Comment = ({comment, setCommentList, postId}) => {
                         <span>{moment(created_at).fromNow()}</span>
                     </Tooltip>
                 }
-                actions={ // TODO: Comment 수정 및 삭제 추가.
+                actions={ 
                     (id===user['userId'])?
                         ([
                             <EditOutlined onClick={() => handleEditComment(content)} />,

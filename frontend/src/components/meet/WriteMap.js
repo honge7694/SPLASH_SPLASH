@@ -6,7 +6,7 @@ import '../../style/meet/Map.scss';
 
 const { kakao } = window;
 
-const WriteMap = ({ changeLat, changeLng, changePlace }) => {
+const WriteMap = ({ changeLat, changeLng, changePlace, Lat, Lng }) => {
 	const [search, setSearch] = useState("");
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -15,12 +15,16 @@ const WriteMap = ({ changeLat, changeLng, changePlace }) => {
     //처음 지도 그리기
     useEffect(()=>{
         const container = document.getElementById('map');
-        const options = { center: new kakao.maps.LatLng(33.450701, 126.570667) };
+        console.log('Lat, Lng : ', Lat, Lng)
+        const options = { center: new kakao.maps.LatLng(Lat, Lng) };
+        console.log(options)
         const map = new kakao.maps.Map(container, options);
 
         const markerPosition = new window.kakao.maps.LatLng(
-            38.2313466,
-            128.2139293
+                Lat,
+                Lng
+                // 38.2313466,
+                // 128.2139293
         );
 
         const marker = new window.kakao.maps.Marker({
@@ -317,5 +321,10 @@ const WriteMap = ({ changeLat, changeLng, changePlace }) => {
         </div>
     );
 };
+
+WriteMap.defaultProps = {
+    Lat : 38.2313466,
+    Lng : 128.2139293
+}
 
 export default WriteMap;

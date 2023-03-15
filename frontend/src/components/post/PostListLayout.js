@@ -40,7 +40,6 @@ const PostListLayout = ({data, handleLike}) => {
                     <List.Item
                         key={item.id}
                         actions={[
-                            // TODO: 댓글, 좋아요 수정
                             <IconText icon={() => item.is_like ? (
                                     console.log(item.is_like),
                                     <HeartTwoTone twoToneColor="#eb2f96" onClick={()=> handleLike({item})} /> 
@@ -93,4 +92,3 @@ const PostListLayout = ({data, handleLike}) => {
 }
 
 export default PostListLayout;
-// TODO: pages/PostList.js -> PostListLayout.js 로직수정필요
