@@ -109,7 +109,6 @@ const MeetDetailLayout = ({meet, setMeet}) => {
                     ]
                 }
                 actions={
-                    // TODO: 수정
                     user_id === user['userId'] ? (
                         [
                             is_attendance ? (
