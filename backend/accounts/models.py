@@ -14,6 +14,8 @@ class UserManager(BaseUserManager):
             raise ValueError('last_name을 입력해주세요.')
         elif not phone_number:
             raise ValueError('phone_number를 입력해주세요.')
+        elif not date_of_birth:
+            raise ValueError('date_of_birth를 입력해주세요.')
         elif not gender:
             raise ValueError('gender를 입력해주세요.')
         elif not password:
@@ -59,7 +61,7 @@ class User(AbstractBaseUser):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=13, blank=True, validators=[RegexValidator(r"^010-?[1-9]\d{3}-?\d{4}$")])
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(blank=True, null=True)
     gender = models.CharField(max_length=1, choices=GenderChoices.choices)
     following_set = models.ManyToManyField('self', related_name='follower_set', symmetrical=False, blank=True)
     avatar = models.ImageField(

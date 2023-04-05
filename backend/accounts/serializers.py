@@ -28,7 +28,7 @@ class SignupSerializer(serializers.Serializer):
         ('F', '여성')
     )
 
-    email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all())])
+    email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all(), message='사용중인 이메일입니다.')])
     password = serializers.CharField(write_only=True)
     nickname = serializers.CharField()
     first_name = serializers.CharField()
@@ -61,12 +61,17 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['refresh'] =  str(refresh)
         data['access'] = str(refresh.access_token)
 
-        data['user_info'] ={ 
+        data['user_info'] = { 
             'id': self.user.id,
             'nickname' : self.user.nickname,
         }
         
         return data
+    
 
+class KakaoSignupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['nickname', 'first_name', 'last_name', 'phone_number', 'gender', 'date_of_birth']
 
 

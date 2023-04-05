@@ -3,44 +3,60 @@ import { Button, Form, Input, Select, DatePicker, notification, Card } from 'ant
 import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
 import Axios from "axios";
 import { Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { setToken, useAppContext } from 'store';
+import { useSetRecoilState } from "recoil";
+import { userState } from '../../state';
 import '../../style/accounts/Signup.scss';
 
 
-const SignupForm = () => {
+const KakaoSignupForm = () => {
     const { Option } = Select;
     const [ fieldsErrors, SetFieldsErrors ] = useState({});
     const [api, setApi] = notification.useNotification();
+    const { dispatch } = useAppContext();
+    const setUser = useSetRecoilState(userState);
     const history = useNavigate();
     const location = useLocation();
     const item = location;
+    const { state: { data: { user_info, access_token } }} = item;
     console.log("item : ", item);
     
     const onFinish = (values) => {
         const handleSubmit = async () => {
             console.log("inputs : ", values);
             values["date_of_birth"] = values['date_of_birth'].format("YYYY-MM-DD");
-            const { email, password, nickname, first_name, last_name, date_of_birth, phone_number, gender } = values;
-            const data = { email, password, nickname, first_name, last_name, date_of_birth, phone_number, gender };
+            const { nickname, first_name, last_name, date_of_birth, phone_number, gender } = values;
+            const data = { nickname, first_name, last_name, date_of_birth, phone_number, gender };
             
             SetFieldsErrors({});
 
             try{
-                const response = await Axios.post('http://localhost:8000/accounts/signup/', data);
+                const response = await Axios.patch(`http://localhost:8000/accounts/kakao/signup/${user_info.id}/`, data);
+                console.log("response", response);
 
                 api.info({
-                    message: '회원가입 성공',
-                    description: '로그인페이지로 이동합니다',
+                    message: '추가 정보입력 완료',
+                    description: '메인페이지로 이동합니다',
                     icon: <SmileOutlined style={{ color: "#108ee9" }}/>
                     
                 });
 
-                history('/accounts/login')  ;
+                const jwtToken = access_token;
+                dispatch(setToken(jwtToken, ""));
+                
+                setUser({
+                    userId: user_info.id,
+                    userNickname: nickname,
+                });
+
+                history("/");
+                // history('/accounts/login');
 
             }catch(error){
-                console.log('error : ', error.response);
+                console.log('error : ', error);
                 if (error.response){
                     api.info({
-                        message: '회원가입 실패',
+                        message: '추가 정보입력 실패',
                         description: '필드 에러를 확인해주세요.',
                         icon: <FrownOutlined style={{ color: "red" }}/>
                     });
@@ -81,42 +97,7 @@ const SignupForm = () => {
                     validateMessages={validateMessages}
                     layout="vertical"
                 >
-                    <Form.Item name="email" label="Email" rules={[  
-                        {
-                            type: 'email',
-                            message: 'email 형식에 맞게 입력해주세요.',
-                        },{ required: true, },
-                    ]} 
-                    hasFeedback
-                    { ...fieldsErrors.email }
-                    >
-                        <Input />
-                    </Form.Item>
-
-                    <Form.Item name="password" label="Password" rules={[ { required: true} ]}>
-                        <Input.Password />
-                    </Form.Item>
-
-                    <Form.Item name="confirm" label="Confirm Password" dependencies={['password']} hasFeedback 
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please confirm your password!',
-                            },
-                            ({ getFieldValue }) => ({
-                                validator(_, value) {
-                                if (!value || getFieldValue('password') === value) {
-                                    return Promise.resolve();
-                                }
-                                return Promise.reject(new Error('비밀번호가 일치하지 않습니다.'));
-                                },
-                            }),
-                        ]}
-                    >
-                        <Input.Password />
-                    </Form.Item>
-
-                    <Form.Item name="nickname" label="Nickname" rules={[ { required: true }, { min: 4, message: "2글자 이상입력해주세요."} ]}>
+                    <Form.Item name="nickname" label="Nickname" rules={[ { required: true }, { min: 2, message: "2글자 이상입력해주세요."} ]}>
                         <Input />
                     </Form.Item>
 
@@ -154,4 +135,4 @@ const SignupForm = () => {
     );
 }
 
-export default SignupForm;
+export default KakaoSignupForm;

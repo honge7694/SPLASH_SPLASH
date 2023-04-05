@@ -7,6 +7,7 @@ import { useSetRecoilState } from "recoil";
 import '../../style/accounts/Login.scss';
 import { setToken, useAppContext } from 'store';
 import { userState } from '../../state';
+import { KAKAO_AUTH_URL } from 'components/accounts/OAuth';
 
 
 const LoginForm = () => {
@@ -57,7 +58,7 @@ const LoginForm = () => {
 
         handleSubmit();
     }
-
+    
     return (
         <div>
             <Card title="로그인">
@@ -80,10 +81,13 @@ const LoginForm = () => {
                     </Form.Item>
 
                     <Form.Item  wrapperCol={{ offset: 8, span: 16, }}>
-                        <Button type="primary" htmlType="submit">
+                        <Button htmlType="submit">
                             로그인
                         </Button>
                     </Form.Item>
+                    <Button href={KAKAO_AUTH_URL}>
+                        <span>카카오 로그인</span>
+                    </Button>
                 </Form>
             </Card>
         </div>
