@@ -7,8 +7,9 @@ from django_pydenticon.views import image as pydenticon_image
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('post/', include('post.urls')),
+    path('chat/', include('chat.urls')),
     path('meet/', include('meet.urls')),
+    path('post/', include('post.urls')),
     path('identicon/image/<path:data>/', pydenticon_image, name='pydenticon_image'),
 ]
 

@@ -45,8 +45,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 
     'accounts',
-    'post',
+    'chat',
     'meet',
+    'post',
 
 ]
 

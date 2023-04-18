@@ -1,9 +1,7 @@
 from allauth.account.views import SignupView, LogoutView
 from allauth.socialaccount.models import SocialAccount, SocialToken
-from allauth.socialaccount.providers.kakao import views as kakao_view
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from allauth.socialaccount.providers.kakao.views import KakaoOAuth2Adapter
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from django.contrib.auth import get_user_model, authenticate
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -167,7 +165,7 @@ class KakaoCallBackView(APIView):
         
 
 class KakaoLogin(SocialLoginView):
-    adapter_class = kakao_view.KakaoOAuth2Adapter
+    adapter_class = KakaoOAuth2Adapter
     callback_url = KAKAO_CALLBACK_URI
     client_class = OAuth2Client
 
