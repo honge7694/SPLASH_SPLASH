@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from "recoil";
-import Chat from './Chat';
+import Chat from './chat/ChatLayout';
 import SideMenu from './SideMenu';
 import '../style/AppLayout.scss';
 import { userState } from 'state';
