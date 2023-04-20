@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Button, Input } from "antd";
+import ChatWebSocket from './WebsocketInstance'
 import '../../style/ChatLayout.scss';
 
 
 const ChatLayout = ({style}) => {
+    useEffect(() => {
+        ChatWebSocket.connect();
+        return () => {
+            ChatWebSocket.disconnect();
+        };
+    }, []);
     return (
         <div style={style}>
             <Card className="Chat" title="Chat" size='small' style={{ height: "auto" }} actions={[
