@@ -12,7 +12,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+env_path = BASE_DIR / ".env"
+if env_path.exists():
+    with env_path.open(encoding="utf8") as f:
+        env.read_env(f, overwrite=True)
+# environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -96,6 +100,24 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# django channels layer
+if "CHANNEL_LAYER_REDIS_URL" in env:
+    channel_layer_redis = env.db_url("CHANNEL_LAYER_REDIS_URL")
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [
+                    {
+                        "host": channel_layer_redis["HOST"],
+                        "port": channel_layer_redis.get("PORT") or 6379,
+                        "password": channel_layer_redis['PASSWORD']
+                    }
+                ]
+            }
+        }
+    }
 
 
 # Password validation
