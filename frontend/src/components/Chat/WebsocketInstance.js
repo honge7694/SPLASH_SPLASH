@@ -4,7 +4,7 @@ class WebSocketInstance {
     }
 
     connect() {
-        const path = `ws/echo/`
+        const path = `ws/chat/`
         this.socketRef = new WebSocket(`ws://localhost:8000/${path}`);
         this.socketRef.onopen = () => {
             console.log("웹소켓 서버 연결 성공.")
