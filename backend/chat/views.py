@@ -6,7 +6,8 @@ from .serializers import ChatSerializer
 
 
 class ChatMessageAPIView(ListCreateAPIView):
-    queryset = Chat.objects.all()[:50]
+    qs = Chat.objects.all().order_by('-id')[:50]
+    queryset = Chat.objects.filter(pk__in=qs).order_by('id')
     serializer_class = ChatSerializer
     permission_classes = [IsAuthenticated]
 

@@ -1,42 +1,147 @@
-import React, { useState, useEffect } from "react";
-import { Card, Button, Form, Input } from "antd";
-import ChatWebSocket from './WebsocketInstance'
-import Websocket from 'react-websocket';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Card, Button, Form, Input, Space } from "antd";
+import Axios from 'axios';
+// import ChatWebSocket from './WebsocketInstance'
+import { useRecoilValue } from "recoil";
+import { userState } from 'state';
+import { useAppContext } from 'store';
+import ChatBubble from './ChatBubble';
 import '../../style/ChatLayout.scss';
 
 
 const ChatLayout = ({style}) => {
-    const [messages, setMessage] = useState([]);
+    const user = useRecoilValue(userState);
+    const { store: token } = useAppContext();
 
-    const handleData = (data) => {
-        const message = JSON.parse(data);
-        setMessage((prevMessages) => [...prevMessages, message])
-    }
+    const [form] = Form.useForm();
+    const [messages, setMessages] = useState([]);
+    const socketRef = useRef(null);
+    const retryRef = useRef(0);
+    const chatInput = useRef(null);
+    const headers = { Authorization: `Bearer ${token['jwtToken']}`};
+    console.log("messages : ", messages);
+    const connect = () => {
+        if (socketRef.current) socketRef.current.close();
 
-    const onFinish = () => {
+        const path = 'ws/chat/';
+        socketRef.current = new WebSocket(`ws://localhost:8000/${path}`,
+            // { headers }
+        );
 
-    }
+        socketRef.current.onopen = () => {
+            console.log('웹소켓 서버 연결 성공');
+            retryRef.current = 0;
+        }
 
+        socketRef.current.onmessage = (event) => {
+            const message_json = event.data;
+            console.log("메세지 수신 : ", message_json);
+            const message = JSON.parse(message_json);
+            setMessages((prevMessages) => [...prevMessages, message]);
+
+             // 채팅 메시지를 서버에 저장
+            Axios.post('http://localhost:8000/chat/', {
+                message: message.message,
+            }, { headers })
+            .then(res => {
+                console.log('메시지 저장 성공', res);
+            })
+            .catch(err => {
+                console.log('메시지 저장 실패', err);
+            });
+        };
+
+        socketRef.current.onerror = () => {
+            console.error('웹소켓 에러 발생');
+        };
+
+        socketRef.current.onclose = (event) => {
+            if (event.wasClean && socketRef.current) {
+                console.log('socketRef.close()에 의한 연결 끊기');
+            } else {
+                console.log('웹소켓 서버와의 네트워크 단절로 인한 끊김.');
+                if (retryRef.current < 3) {
+                    retryRef.current += 1;
+                    setTimeout(() => {
+                    connect();
+                    console.log(`[${retryRef.current}] 접속 재시도...`);
+                    }, 1000 * retryRef.current);
+                }
+            }
+        };
+    };
 
     useEffect(() => {
-        ChatWebSocket.connect();
-        return () => {
-            ChatWebSocket.disconnect();
-        };
+        const chatData = async () => {
+            const { data } = await Axios.get('http://localhost:8000/chat/', { headers });
+            setMessages(prevMessages => [...prevMessages, ...data]);
+        }
+        chatData();
     }, []);
+
+    useEffect(() => {
+        connect();
+
+        if (chatInput.current) {
+            chatInput.current.focus();
+        }
+
+        return () => {
+            if (socketRef.current) {
+                socketRef.current.close();
+                console.log('웹소켓 연결 해제');
+            }
+        };
+
+    }, []);
+
+    const onFinish = (values) => {
+        // e.preventDefault();
+        const { message } = values;
+        const data = {
+            "message": message,
+            "user": user['userId'],
+        }
+
+        // 채팅 포커스
+        form.resetFields();
+
+        if (socketRef.current.readyState === WebSocket.OPEN) {
+            console.log('sendMessage.data : ', data);
+            const { message, user } = data;
+            socketRef.current.send(
+                JSON.stringify({
+                    type: 'chat.message',
+                    message: message,
+                    sender: user,
+                })
+            );
+        } else {
+            console.log('WebSocket is not open');
+        }
+
+    }
+
     return (
         <div style={style}>
             <Card className="Chat" title="Chat" size='small' style={{ height: "auto" }} actions={[
-                <Form
-                onFinish={onFinish}
-                layout="vertical"
-                >
-                    <Input.Group compact key="input">
-                        <Input style={{ width: 'calc(100% - 100px)', textAlign: 'left'}} placeholder="메시지를 입력하세요" />
-                        <Button type="primary">Submit</Button>
-                    </Input.Group>
+                <Form form={form} onFinish={onFinish}>
+                    <Form.Item name="message" >
+                        <Space.Compact
+                            style={{
+                                width: '95%',
+                            }}
+                        >
+                            <Input placeholder="입력해주세요" ref={chatInput} />
+                            <Button type="primary">Submit</Button>
+                        </Space.Compact>
+                    </Form.Item>
                 </Form>
             ]} >
+                {messages.map((message, index) => (
+                    // console.log(message),
+                    <ChatBubble key={index} message={message} />
+                ))}
             </Card>
         </div>
     );
