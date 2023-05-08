@@ -37,7 +37,7 @@ const ChatLayout = ({style}) => {
             const message_json = event.data;
             console.log("메세지 수신 : ", message_json);
             const message = JSON.parse(message_json);
-            setMessages((prevMessages) => [...prevMessages, message]);
+            // setMessages((prevMessages) => [...prevMessages, message]);
 
              // 채팅 메시지를 서버에 저장
             Axios.post('http://localhost:8000/chat/', {
@@ -45,6 +45,16 @@ const ChatLayout = ({style}) => {
             }, { headers })
             .then(res => {
                 console.log('메시지 저장 성공', res);
+                const chatData = async () => {
+                    try {
+                        const { data } = await Axios.get('http://localhost:8000/chat/', { headers });
+                        console.log("메시지 저장 성공 data : ", [data.slice(-1)[0]]);
+                        setMessages(prevMessages => [...prevMessages, data.slice(-1)[0]]);
+                    } catch(error) {
+                        console.log(error);
+                    }
+                }
+                chatData();
             })
             .catch(err => {
                 console.log('메시지 저장 실패', err);
@@ -73,8 +83,12 @@ const ChatLayout = ({style}) => {
 
     useEffect(() => {
         const chatData = async () => {
-            const { data } = await Axios.get('http://localhost:8000/chat/', { headers });
-            setMessages(prevMessages => [...prevMessages, ...data]);
+            try {
+                const { data } = await Axios.get('http://localhost:8000/chat/', { headers });
+                setMessages(prevMessages => [...prevMessages, ...data]);
+            } catch(error) {
+                console.log(error);
+            }
         }
         chatData();
     }, []);
@@ -139,7 +153,7 @@ const ChatLayout = ({style}) => {
                 </Form>
             ]} >
                 {messages.map((message, index) => (
-                    // console.log(message),
+                    // console.log("map 실행"),
                     <ChatBubble key={index} message={message} />
                 ))}
             </Card>
