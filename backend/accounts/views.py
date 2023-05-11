@@ -93,7 +93,7 @@ class KakaoCallBackView(APIView):
 
             # 존재하는 이메일이지만 kakao가 아닐시 에러.
             if social_user.provider != 'kakao':
-                return JsonResponse({"message": "이미 가입된 회원입니다."}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse({"message": "다른 소셜(으)로 가입된 회원입니다."}, status=status.HTTP_400_BAD_REQUEST)
             
             # Kakao 회원 => 로그인 & jwt 발급
             data = {
@@ -114,7 +114,7 @@ class KakaoCallBackView(APIView):
             accept_json.pop('user', None)
 
             # 추가 정보를 입력하지 않았을 경우.
-            if user.nickname is "":
+            if user.nickname == "":
                 result = {
                     "accept_json": accept_json,
                     "access_token": access_token, 

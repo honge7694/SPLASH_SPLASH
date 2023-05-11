@@ -5,6 +5,8 @@ import { MailOutlined } from '@ant-design/icons';
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import { userState } from 'state';
 import { deleteToken, useAppContext } from 'store';
+import LogoImage from "../assets/splash_logo.png"
+
 
 const Header = () => {
     const { dispatch } = useAppContext();
@@ -35,7 +37,10 @@ const Header = () => {
             key: 'Logout'
         }
     ]
-
+    const onLogoClickHandler = (e) => {
+        history('/');
+    }
+    
     const onClickHandler = (e) => {
         console.log(e);
         setCurrent(e.key);
@@ -58,9 +63,9 @@ const Header = () => {
 
     return(
         <div className='header'>
-            <h1 className='page-title'>SPLASH-SPLASH</h1>
+            <h1 className='page-title'><img src={LogoImage} style={{marginTop: "10px", width: "150px", height: "65px"}} onClick={onLogoClickHandler}></img></h1>
             <div className='search'>
-                <Input.Search />
+                {/* <Input.Search /> */}
             </div>
             <div className='topNav'>
                 <Menu mode="horizontal" items={user['userId'] == null ? items : userItems} selectedKeys={ current } onClick={onClickHandler}></Menu>

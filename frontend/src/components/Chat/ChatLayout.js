@@ -18,8 +18,10 @@ const ChatLayout = ({style}) => {
     const socketRef = useRef(null);
     const retryRef = useRef(0);
     const chatInput = useRef(null);
+    const chatContainerRef = useRef(null);
     const headers = { Authorization: `Bearer ${token['jwtToken']}`};
     console.log("messages : ", messages);
+
     const connect = () => {
         if (socketRef.current) socketRef.current.close();
 
@@ -37,28 +39,18 @@ const ChatLayout = ({style}) => {
             const message_json = event.data;
             console.log("메세지 수신 : ", message_json);
             const message = JSON.parse(message_json);
-            // setMessages((prevMessages) => [...prevMessages, message]);
-
-             // 채팅 메시지를 서버에 저장
-            Axios.post('http://localhost:8000/chat/', {
-                message: message.message,
-            }, { headers })
-            .then(res => {
-                console.log('메시지 저장 성공', res);
-                const chatData = async () => {
-                    try {
-                        const { data } = await Axios.get('http://localhost:8000/chat/', { headers });
-                        console.log("메시지 저장 성공 data : ", [data.slice(-1)[0]]);
-                        setMessages(prevMessages => [...prevMessages, data.slice(-1)[0]]);
-                    } catch(error) {
-                        console.log(error);
-                    }
+            const chatData = async () => {
+                try {
+                    const { data } = await Axios.get('http://localhost:8000/chat/');
+                    console.log("메시지 저장 성공 data : ", [data.slice(-1)[0]]);
+                    setMessages(prevMessages => [...prevMessages, data.slice(-1)[0]]);
+                } catch(error) {
+                    console.log(error);
                 }
-                chatData();
-            })
-            .catch(err => {
-                console.log('메시지 저장 실패', err);
-            });
+            }
+            chatData();
+            // setMessages((prevMessages) => [...prevMessages, message]);
+            
         };
 
         socketRef.current.onerror = () => {
@@ -84,7 +76,7 @@ const ChatLayout = ({style}) => {
     useEffect(() => {
         const chatData = async () => {
             try {
-                const { data } = await Axios.get('http://localhost:8000/chat/', { headers });
+                const { data } = await Axios.get('http://localhost:8000/chat/');
                 setMessages(prevMessages => [...prevMessages, ...data]);
             } catch(error) {
                 console.log(error);
@@ -109,6 +101,10 @@ const ChatLayout = ({style}) => {
 
     }, []);
 
+    useEffect(() => {
+        chatContainerRef.current.scrollIntoView({ behavior: 'smooth'});
+    }, [messages]);
+
     const onFinish = (values) => {
         // e.preventDefault();
         const { message } = values;
@@ -130,15 +126,32 @@ const ChatLayout = ({style}) => {
                     sender: user,
                 })
             );
+
+            // 채팅 메시지를 서버에 저장
+            Axios.post('http://localhost:8000/chat/', {
+                message: message,
+            }, { headers })
+            .then(res => {
+                console.log('메시지 저장 성공', res);
+            })
+            .catch(err => {
+                console.log('메시지 저장 실패', err);
+            });
+
+
         } else {
             console.log('WebSocket is not open');
         }
 
     }
 
+    const headStyle = {
+        background: '#ffffff',
+    };
+
     return (
         <div style={style}>
-            <Card className="Chat" title="Chat" size='small' style={{ height: "auto" }} actions={[
+            <Card className="Chat" title="Chat" size='small' style={{ height: "auto" }} headStyle={headStyle} actions={[
                 <Form form={form} onFinish={onFinish}>
                     <Form.Item name="message" >
                         <Space.Compact
@@ -146,8 +159,19 @@ const ChatLayout = ({style}) => {
                                 width: '95%',
                             }}
                         >
-                            <Input placeholder="입력해주세요" ref={chatInput} />
-                            <Button type="primary">Submit</Button>
+                            { user['userId'] == null ? (
+                                <div>
+                                    <>
+                                        <Input placeholder="로그인이 필요합니다." ref={chatInput} disabled={true} />
+                                        <Button type="primary">Submit</Button>
+                                    </>
+                                </div>
+                            ) : (
+                                <>
+                                    <Input placeholder="입력해주세요" ref={chatInput} />
+                                    <Button type="primary">Submit</Button>
+                                </>
+                            )}
                         </Space.Compact>
                     </Form.Item>
                 </Form>
@@ -156,6 +180,7 @@ const ChatLayout = ({style}) => {
                     // console.log("map 실행"),
                     <ChatBubble key={index} message={message} />
                 ))}
+                <div ref={chatContainerRef}></div>
             </Card>
         </div>
     );
