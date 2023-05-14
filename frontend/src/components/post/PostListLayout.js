@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Avatar, List, Space } from 'antd';
 import { HeartTwoTone, HeartOutlined, MessageOutlined } from '@ant-design/icons';
 import moment from "moment";
+import PostLogo from "../../assets/post_logo.jpg"
 
 
 const PostListLayout = ({data, handleLike}) => {
@@ -56,7 +57,7 @@ const PostListLayout = ({data, handleLike}) => {
                                     width={180}
                                     height={120}
                                     alt="logo"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                                    src={PostLogo}
                                 />
                             ) : (
                                 <img 

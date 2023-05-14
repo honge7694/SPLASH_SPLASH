@@ -1,19 +1,20 @@
 .app{
     display: grid;
     background: #f2f2f2;
-    grid-template-columns:1fr 2fr 1fr;
+    grid-template-columns:0.7fr 2.6fr 0.7fr;
     grid-template-areas:
         'chat main side-menu';
     gap: 1rem;
     padding-top: 50px;
-    height: 100vh;
+
+
     // margin: 10px auto;
 
     .chat{
         grid-area: chat;
         margin: 30px auto;
         position: fixed;
-        left: 80px;
+        left: 60px;
         .ant-card-body{
             min-width: 260px;
             max-height: 250px;
@@ -27,17 +28,17 @@
     .main {
         display: grid;
         gap: 1rem;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         grid-template-areas:
-            'header header header'
-            'contents contents contents'
-            'footer footer footer';
+            'contents contents contents contents'
+            'footer footer footer footer';
         width: 1024px;
-        // height: 2000vh;
+        height: 150vh;
         max-width: 100%;
         min-height: 500px;
         margin: 0px auto;
         grid-area: main;
+        // overflow: scroll;
         .header {
             display: flex;
             justify-content: space-between;
@@ -74,6 +75,9 @@
         
         .contents {
             grid-area: contents;
+            width: 1024px;
+            margin: 30px auto;
+            // position: fixed;
         }
 
         .footer {
@@ -89,9 +93,9 @@
         right: 117px;
         
         .menu{
-            background-color:  #F5F5F5;
+            background-color:  #ffffff;
             padding: 10px 0px;
-            border: 3px solid rgba(5, 5, 5, 0.06);
+            border: 3px solid rgba(5, 5, 5, 0.07);
             border-radius: 8px;
         }
     }
