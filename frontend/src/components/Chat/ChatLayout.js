@@ -151,7 +151,7 @@ const ChatLayout = ({style}) => {
 
     return (
         <div style={style}>
-            <Card className="Chat" title="Chat" size='small' style={{ height: "auto" }} headStyle={headStyle} actions={[
+            <Card className="Chat" title="Chat" size='small' style={{ height: "auto" }} actions={[
                 <Form form={form} onFinish={onFinish}>
                     <Form.Item name="message" >
                         <Space.Compact
