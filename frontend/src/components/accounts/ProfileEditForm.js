@@ -57,13 +57,18 @@ const ProfileEditForm = () => {
         formData.append('date_of_birth', date_of_birth.format('YYYY-MM-DD'));
         formData.append('phone_number', phone_number);
         formData.append('gender', gender);
-        // formData.append('password', password);
+        formData.append('password', password);
 
         const response = await Axios.patch(`http://localhost:8000/accounts/edit/${user['userId']}/`, formData, { headers });
         console.log(response);
-        // if (response.status === 200){
-        //     history(`/meet/${id}`)
-        // }
+        if (response.status === 200){
+            notification.open({
+                message: '회원 수정이 완료되었습니다.',
+                // description: '회원 정보를 확인할 수 없습니다.',
+                icon: <SmileOutlined style={{ color: "green" }}/>
+            });
+            history(`/`);
+        }
     }
 
     const validateMessages = {

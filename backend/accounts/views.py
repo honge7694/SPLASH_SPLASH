@@ -46,6 +46,22 @@ class UserEditView(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
+    def perform_update(self, serializer):
+        # 비밀번호 필드가 전달되었는지 확인
+        password = self.request.data.get('password')
+
+        if password:
+            # 비밀번호 변경이 요청된 경우
+            # 원하는 비밀번호 처리 로직을 수행하고 저장
+            user = serializer.save()
+            user.set_password(password)
+            user.save()
+        else:
+            # 비밀번호 변경이 요청되지 않은 경우
+            serializer.save()
+
+        return Response(serializer.data)
+
 
 BASE_URL = "http://127.0.0.1:8000/"
 KAKAO_CALLBACK_URI = BASE_URL + "accounts/kakao/callback/"
