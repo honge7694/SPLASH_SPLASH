@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from .models import MeetingPost
 from .serializers import MeetingPostSerializer, MeetingAttendanceSerializer
@@ -40,4 +40,12 @@ class MeetingAttendanceAPIView(ListCreateAPIView):
             meet.is_attendance.remove(self.request.user)
             return Response(status=status.HTTP_204_NO_CONTENT)
         meet.is_attendance.add(self.request.user)
+        
 
+class UserMeetArticleAPIView(ListAPIView):
+    serializer_class = MeetingPostSerializer
+
+    def get_queryset(self):
+        user = self.request.user.id
+        qs = MeetingPost.objects.filter(author__id=user)
+        return qs

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from .serializers import PostSerializer, PostImageSerializer, LikeSerializer, CommentSerializer
@@ -76,4 +76,16 @@ class CommentDetailAPIView(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         qs = super().get_queryset()
         qs = qs.filter(pk=self.kwargs['pk'])
+        return qs
+    
+
+class UserPostArticleAPIView(ListAPIView):
+    '''
+    유저 POST 작성글
+    '''
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        user = self.request.user.id
+        qs = Post.objects.filter(author__id=user)
         return qs
