@@ -23,7 +23,7 @@ const SideMenu = () => {
         getItem('자유게시판', 'post', <FileTextOutlined />),
         getItem('모임게시판', 'meet', <CalendarOutlined />),
         getItem('마이페이지', 'accounts', <UserOutlined />, [
-            getItem('작성한 글 보기', '5', <AppstoreOutlined />),
+            getItem('작성한 글 보기', 'accounts/article', <AppstoreOutlined />),
             getItem('회원정보 수정', 'accounts/profile', <SettingOutlined />),
         ]),
     
