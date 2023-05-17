@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
 import { Button, Card, Form, Input, Modal, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import getBase64FromFile from 'utils/base64';
@@ -8,6 +9,8 @@ import { useAppContext } from 'store';
 
 const PostEditForm = ({post}) => {
     console.log(post)
+    const { id } = useParams();
+    const history = useNavigate();
     const { title, content, images } = post;
     const { store: token } = useAppContext();
     const [fileList, setFileList] = useState([]);
@@ -16,16 +19,17 @@ const PostEditForm = ({post}) => {
         base64: null,
     })
 
-    //FIXME: setFileList에 img넣기.
-    // useEffect(() => {
-    //     if(images.length > 0){
-    //         for(let i=0; i < images.length; i++){
-    //             setFileList({
-    //                 url: 'http://localhost:8000/media/'+images[i].image
-    //             });
-    //         }
-    //     }
-    // },[]);
+    useEffect(() => {
+        if (images.length > 0) {
+        const convertedFileList = images.map((image) => ({
+            uid: image.id,
+            name: image.name,
+            status: 'done',
+            url: `http://localhost:8000/media/${image.image}`,
+        }));
+        setFileList(convertedFileList);
+        }
+    }, [images]);
 
     const handleUploadChange = ({ fileList }) => {
         setFileList(fileList);
@@ -45,7 +49,8 @@ const PostEditForm = ({post}) => {
 
     const handleFinish = async (fieldValues) => {
         console.log('fieldValues : ', fieldValues);
-        const { title, content, image: { fileList }} = fieldValues;
+        const { title, content, image} = fieldValues;
+        const fileList = image?.fileList || [];
 
         const formData = new FormData();
         formData.append("title", title);
@@ -53,16 +58,23 @@ const PostEditForm = ({post}) => {
         fileList.forEach(file => {
             formData.append("image", file.originFileObj);
         });
-
         const headers = { Authorization: `Bearer ${token['jwtToken']}`};
-        const response = await Axios.put('http://localhost:8000/post/', formData, { headers });
+        const response = await Axios.patch(`http://localhost:8000/post/${id}/`, formData, { headers });
         console.log(response);
+
+        if (response.status === 200){
+            history(`/post/${id}`);
+        }
     };
 
     const validateMessages = {
         required: '${label}을 입력해주세요.',
     }
 
+    const fields = [
+        { name: ['title'], value: title},
+        { name: ['content'], value: content },
+    ]
     
     return (
         <div>
@@ -72,13 +84,14 @@ const PostEditForm = ({post}) => {
                     layout="vertical"
                     className="post-new-form"
                     validateMessages={validateMessages}
+                    fields={fields}
                 >
                     <Form.Item name="title" label="title" rules={[  
                         {
                             message: '제목을 입력해주세요.',
                         },{ required: true, },
                     ]} hasFeedback>
-                        <Input defaultValue={title}/>
+                        <Input />
                     </Form.Item>
 
                     <Form.Item name="content" label="content" rules={[  
@@ -86,7 +99,7 @@ const PostEditForm = ({post}) => {
                             message: '내용을 입력해주세요.',
                         },{ required: true, },
                     ]} hasFeedback>
-                        <Input.TextArea defaultValue={content}/>
+                        <Input.TextArea autoSize="True" />
                     </Form.Item>
 
                     <Form.Item label="image" name="image">

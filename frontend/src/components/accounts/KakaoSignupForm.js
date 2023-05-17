@@ -50,7 +50,6 @@ const KakaoSignupForm = () => {
                 });
 
                 history("/");
-                // history('/accounts/login');
 
             }catch(error){
                 console.log('error : ', error);

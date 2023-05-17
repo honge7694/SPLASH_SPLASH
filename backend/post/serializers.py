@@ -16,7 +16,7 @@ class PostImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PostImage
-        fields = ['image',]
+        fields = ['id', 'image',]
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -49,6 +49,25 @@ class PostSerializer(serializers.ModelSerializer):
         for image_data in image_set.getlist('image'):
             PostImage.objects.create(post=instance, image=image_data)
         
+        return instance
+
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.title)
+        instance.content = validated_data.get('content', instance.content)
+        new_image_data = self.context['request'].FILES.getlist('image')
+        existing_image_ids = instance.image_set.values_list('id', flat=True)
+
+        if len(new_image_data) > 8:
+            raise serializers.ValidationError("이미지는 8개까지만 가능합니다.")
+        
+        # 기존 이미지 삭제
+        deleted_image_ids = instance.image_set.exclude(id__in=existing_image_ids).values_list('id', flat=True)
+        instance.image_set.filter(id__in=deleted_image_ids)
+
+        # 새로운 이미지 추가
+        for image_data in new_image_data:
+            PostImage.objects.create(post=instance, image=image_data)
+
         return instance
 
     def get_likes(self, obj):

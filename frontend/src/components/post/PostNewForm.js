@@ -77,7 +77,7 @@ const PostNewLayout = () => {
                         message: '내용을 입력해주세요.',
                     },{ required: true, },
                 ]} hasFeedback>
-                    <Input.TextArea />
+                    <Input.TextArea autoSize="True"/>
                 </Form.Item>
 
                 <Form.Item label="image" name="image">
