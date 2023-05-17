@@ -19,7 +19,12 @@ const HomeMeetList = ({data}) => {
             <List
                 dataSource={data}
                 size='large'
-                
+                pagination={{
+                    onChange: (page) => {
+                        console.log(page);
+                    },
+                    pageSize: 5,
+                }}
                 renderItem={(item) => (
                     <List.Item>
                         <a href="#" onClick={ (e) => handlerOnClick(e, item.id) }>

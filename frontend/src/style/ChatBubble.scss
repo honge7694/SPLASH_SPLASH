@@ -60,8 +60,11 @@
 }
 
 .Message.received{
-    display: flex;
-    justify-content: flex-end;
+    // display: flex;
+    // justify-content: flex-end;
+    // white-space: normal;
+    // overflow-wrap: break-word;
+    text-align: right;
 }
 
 

@@ -15,8 +15,9 @@ const MeetEditForm = ({meet}) => {
     const [place, setPlace] = useState(place_data);
     const [placeLat, setPlaceLat] = useState(place_lat);
     const [placeLng, setPlaceLng] = useState(place_lng);
-    const [status, setStatus] = useState(status_data)
-    const [dateAt, setDateAt] = useState(date_at);
+    const [dateAt, setDateAt] = useState(moment(date_at, "YYYY-MM-DD"));
+    const [timeAt, setTimeAt] = useState(moment(time_at, "HH:mm"));
+    const [status, setStatus] = useState(status_data);
     const { store: token } = useAppContext();
     const { Option } = Select;
     // const [form] = Form.useForm();
@@ -28,6 +29,9 @@ const MeetEditForm = ({meet}) => {
         { name: ['place'], value: place},
         { name: ['place_lat'], value: placeLat },
         { name: ['place_lng'], value: placeLng },
+        { name: ['date_at'], value: dateAt },
+        { name: ['time_at'], value: timeAt },
+        { name: ['status_data'], value: status_data },
     ];
 
     const handleFinish = async (fieldValues) => {
@@ -101,11 +105,11 @@ const MeetEditForm = ({meet}) => {
                     <Input.TextArea value={content} autoSize={true}/>
                 </Form.Item>
 
-                <Form.Item name="date_at" label="date" rules={[ {required: true }]} >
-                    <DatePicker format="YYYY-MM-DD"  />
+                <Form.Item name="date_at" label="date" rules={[ {required: true }]} defaultValue={moment(date_at, "YYYY-MM-DD")} format="YYYY-MM-DD" >
+                    <DatePicker format="YYYY-MM-DD" />
                 </Form.Item>
 
-                <Form.Item name="time_at" label="time" rules={[ {required: true }]} >
+                <Form.Item name="time_at" label="time" rules={[ {required: true }]} defaultValue={moment(time_at, "HH:mm")} format="HH:mm">
                     <TimePicker format="HH:mm" />
                 </Form.Item>
 
@@ -118,7 +122,7 @@ const MeetEditForm = ({meet}) => {
                 </Form.Item>
 
                 <Form.Item name="status" label="status" hasFeedback rules={[ {required: true }]}>
-                    <Select>
+                    <Select value={status}>
                         <Option value="success">모집중</Option>
                         <Option value="warning">모집완료</Option>
                     </Select>
