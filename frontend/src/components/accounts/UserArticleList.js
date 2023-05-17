@@ -20,6 +20,12 @@ const UserPostList = ({data}) => {
             <List
                 itemLayout="horizontal"
                 dataSource={data}
+                pagination={{
+                    onChange: (page) => {
+                        console.log(page);
+                    },
+                    pageSize: 5,
+                }}
                 renderItem={item => (
                     <List.Item>
                         <List.Item.Meta
