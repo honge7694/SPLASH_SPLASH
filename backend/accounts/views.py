@@ -12,6 +12,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from .serializers import UserSerializer, SignupSerializer, CustomTokenObtainPairSerializer, KakaoSignupSerializer
 import environ
@@ -138,11 +139,17 @@ class KakaoCallBackView(APIView):
             print('accept_json : ', accept_json)
             accept_json.pop('user', None)
 
+            # kakao 회원용 simple_jwt 토큰
+            refresh = RefreshToken.for_user(user)
+            simplejwt_access_token = str(refresh.access_token)
+            simplejwt_refresh_token = str(refresh)
+
             # 추가 정보를 입력하지 않았을 경우.
             if user.nickname == "":
                 result = {
                     "accept_json": accept_json,
-                    "access_token": access_token, 
+                    "access_token": simplejwt_access_token,
+                    "simplejwt_refresh_token": simplejwt_refresh_token,
                     "user_info": user_info,
                     "status": 204
                 }
@@ -150,7 +157,8 @@ class KakaoCallBackView(APIView):
             
             result = {
                 "accept_json": accept_json,
-                "access_token": access_token, 
+                "access_token": simplejwt_access_token,
+                "refresh_token": simplejwt_refresh_token, 
                 "user_info": user_info,
                 "status": 200
             }
@@ -178,10 +186,16 @@ class KakaoCallBackView(APIView):
                 "id": user.id,
                 "nickname": user.nickname
             }
+            
+            # kakao 회원용 simple_jwt 토큰
+            refresh = RefreshToken.for_user(user)
+            simplejwt_access_token = str(refresh.access_token)
+            simplejwt_refresh_token = str(refresh)
 
             result = {
                 "accept_json": accept_json,
-                "access_token": access_token, 
+                "access_token": simplejwt_access_token,
+                "refresh_token": simplejwt_refresh_token, 
                 "user_info": user_info,
                 "status": 204
             }
