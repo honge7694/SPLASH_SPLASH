@@ -97,7 +97,7 @@ const PostDetailLayout = ({post, handleLike}) => {
                         {images && images.map(image => (
                             console.log(image),
                             <div key={image.image}>
-                                <img  src={"http://localhost:8000/media/" + image.image }/>
+                                <img  src={ image.image }/>
                             </div>
                         ))}
                     </Carousel>
@@ -132,7 +132,7 @@ const PostDetailLayout = ({post, handleLike}) => {
                             <div>
                                 <Avatar
                                     icon={
-                                        author.avatar_url && <img src={"http://localhost:8000" + post.author.avatar_url}/>
+                                        author.avatar_url && <img src={ post.author.avatar_url }/>
                                     }
                                     size='large'
                                 />

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import get_user_model
+import re
 
 
 User = get_user_model()
@@ -10,6 +11,17 @@ class UserSerializer(serializers.ModelSerializer):
     '''
     유저 정보
     '''
+    avatar_url = serializers.SerializerMethodField('avatar_url_field')
+
+    def avatar_url_field(self, author):
+        if re.match(r"^https?://", author.avatar_url):
+            return author.avatar_url
+        
+        if 'request' in self.context:
+            scheme = self.context['request'].scheme # "http" or "https"
+            host = self.context['request'].get_host()
+            return scheme + "://" + host + author.avatar_url 
+        
     class Meta:
         model = User
         fields = ['pk', 'email', 'first_name', 'last_name', 'nickname', 'date_of_birth', 'gender', 'phone_number', 'avatar_url', 'following_set',]

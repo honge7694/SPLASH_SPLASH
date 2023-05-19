@@ -78,7 +78,7 @@ const UserArticleLayout = () => {
                 <Content>
                     <Card>
                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
-                            <Avatar size={64} icon={<img src={profile && `http://localhost:8000${profile.avatar_url}`}/>} />
+                            <Avatar size={64} icon={<img src={profile && profile.avatar_url}/>} />
                             <div style={{ marginLeft: '16px' }}>
                                 <h2>{profile && profile.nickname}</h2>
                                 <p>{profile && profile.email}</p>

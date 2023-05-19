@@ -1,14 +1,28 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import MeetingPost
+import re
+
 
 User = get_user_model()
 
 
 class AuthorSerializer(serializers.ModelSerializer):
+    avatar_url = serializers.SerializerMethodField('avatar_url_field')
+
+    def avatar_url_field(self, author):
+        if re.match(r"^https?://", author.avatar_url):
+            return author.avatar_url
+        
+        if 'request' in self.context:
+            scheme = self.context['request'].scheme # "http" or "https"
+            host = self.context['request'].get_host()
+            return scheme + "://" + host + author.avatar_url 
+    
     class Meta:
         model = User
         fields = ['id', 'email', 'name', 'nickname', 'avatar_url']
+        
 
 
 class MeetingPostSerializer(serializers.ModelSerializer):

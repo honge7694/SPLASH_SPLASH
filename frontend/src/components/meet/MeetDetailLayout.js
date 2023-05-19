@@ -138,7 +138,7 @@ const MeetDetailLayout = ({meet, setMeet}) => {
                             <div>
                                 <Avatar
                                     icon={
-                                        avatar_url && <img src={"http://localhost:8000" + avatar_url}/>
+                                        avatar_url && <img src={avatar_url}/>
                                     }
                                     size='large'
                                 />

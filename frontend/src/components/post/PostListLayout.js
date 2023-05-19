@@ -63,7 +63,7 @@ const PostListLayout = ({data, handleLike}) => {
                                 <img 
                                     width={180} 
                                     height={120} 
-                                    src={"http://localhost:8000/media/" + item.images[0]['image']}
+                                    src={ item.images[0]['image'] }
                                     alt="logo"
                                 /> 
                             )
@@ -71,7 +71,7 @@ const PostListLayout = ({data, handleLike}) => {
                     >
                         <a href="#" onClick={ (e) => handlerOnClick(e, item.id) }>
                             <List.Item.Meta
-                                avatar={<Avatar size='large' icon={ <img src={"http://localhost:8000" + item.author.avatar_url}/> } />}
+                                avatar={<Avatar size='large' icon={ <img src={ item.author.avatar_url }/> } />}
                                 title={item.title}
                                 description={
                                     <div>

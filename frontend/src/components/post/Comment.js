@@ -64,7 +64,7 @@ const Comment = ({comment, setCommentList, postId}) => {
                 author={nickname}
                 avatar={
                     <Avatar
-                        src={"http://localhost:8000" + avatar_url}
+                        src={ avatar_url }
                         alt={nickname + "의 avatar"}
                     />
                 }
