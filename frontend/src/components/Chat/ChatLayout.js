@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Card, Button, Form, Input, Space } from "antd";
-import Axios from 'axios';
-// import ChatWebSocket from './WebsocketInstance'
+import { axiosInstance } from 'api'
 import { useRecoilValue } from "recoil";
 import { userState } from 'state';
 import { useAppContext } from 'store';
@@ -41,7 +40,7 @@ const ChatLayout = ({style}) => {
             const message = JSON.parse(message_json);
             const chatData = async () => {
                 try {
-                    const { data } = await Axios.get('http://localhost:8000/chat/');
+                    const { data } = await axiosInstance.get('/chat/');
                     console.log("메시지 저장 성공 data : ", [data.slice(-1)[0]]);
                     setMessages(prevMessages => [...prevMessages, data.slice(-1)[0]]);
                 } catch(error) {
@@ -76,7 +75,7 @@ const ChatLayout = ({style}) => {
     useEffect(() => {
         const chatData = async () => {
             try {
-                const { data } = await Axios.get('http://localhost:8000/chat/');
+                const { data } = await axiosInstance.get('/chat/');
                 setMessages(prevMessages => [...prevMessages, ...data]);
             } catch(error) {
                 console.log(error);
@@ -128,7 +127,7 @@ const ChatLayout = ({style}) => {
             );
 
             // 채팅 메시지를 서버에 저장
-            Axios.post('http://localhost:8000/chat/', {
+            axiosInstance.post('/chat/', {
                 message: message,
             }, { headers })
             .then(res => {

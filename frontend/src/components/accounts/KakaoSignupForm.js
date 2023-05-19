@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Form, Input, Select, DatePicker, notification, Card } from 'antd';
 import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
-import Axios from "axios";
-import { Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { axiosInstance } from 'api'
+import { useNavigate, useLocation } from 'react-router-dom';
 import { setToken, useAppContext } from 'store';
 import { useSetRecoilState } from "recoil";
 import { userState } from '../../state';
@@ -31,7 +31,7 @@ const KakaoSignupForm = () => {
             SetFieldsErrors({});
 
             try{
-                const response = await Axios.patch(`http://localhost:8000/accounts/kakao/signup/${user_info.id}/`, data);
+                const response = await axiosInstance.patch(`/accounts/kakao/signup/${user_info.id}/`, data);
                 console.log("response", response);
 
                 api.info({

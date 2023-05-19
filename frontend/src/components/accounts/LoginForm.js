@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Form, Input, notification, Card } from 'antd';
 import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
-import Axios from "axios";
+import { axiosInstance } from 'api'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSetRecoilState } from "recoil";
 import '../../style/accounts/Login.scss';
@@ -23,7 +23,7 @@ const LoginForm = () => {
 
         const handleSubmit = async () => {
             try{
-                const response = await Axios.post('http://localhost:8000/accounts/api/token/', data)
+                const response = await axiosInstance.post('/accounts/api/token/', data)
                 const { data : {access : jwtToken, refresh: refreshToken } } = response;
                 
                 // console.log('response : ', response);

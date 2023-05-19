@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { FrownOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
-import Axios from 'axios';
 import PostDetailLayout from "../../components/post/PostDetailLayout";
 import { useAppContext } from 'store';
 import { useResetRecoilState } from "recoil";
 import { userState } from 'state';
 import CommentList from 'components/post/CommentList';
+import { axiosInstance } from 'api';
 
 
 const PostDetail = () => {
@@ -20,9 +20,9 @@ const PostDetail = () => {
 
     useEffect(() => {
         async function fetchPostData() { 
-            const apiUrl = 'http://localhost:8000/post/'+ id +'/'
+            const apiUrl = '/post/'+ id +'/'
             try{
-                const { data } = await Axios.get(apiUrl, { headers });
+                const { data } = await axiosInstance.get(apiUrl, { headers });
                 setPost(data);
 
             } catch(error){
@@ -48,8 +48,8 @@ const PostDetail = () => {
     const handleLike = async () => {
         console.log('headers : ', headers);
         try{
-            const response = await Axios.post(`http://localhost:8000/post/${id}/like/`, '', { headers });
-            const { data } = await Axios.get('http://localhost:8000/post/'+ id +'/', { headers });
+            const response = await axiosInstance.post(`/post/${id}/like/`, '', { headers });
+            const { data } = await axiosInstance.get('/post/'+ id +'/', { headers });
             setPost(data);
         }catch(error){
             console.log('error : ', error);

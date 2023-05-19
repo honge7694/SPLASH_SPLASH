@@ -1,15 +1,13 @@
-import Axios from 'axios';
-import { FrownOutlined } from '@ant-design/icons';
-import { notification } from 'antd';
+import { axiosInstance } from 'api';
 
 
 const TokenRefresh = async (token) => {    
-    const apiUrl = 'http://localhost:8000/accounts/api/token/refresh/';
+    const apiUrl = '/accounts/api/token/refresh/';
     const refreshToken = token;
     const data = { refresh: refreshToken };
 
     try{
-        const response = await Axios.post(apiUrl, data);
+        const response = await axiosInstance.post(apiUrl, data);
         const newToken = response.data.access;
         return newToken;
     }catch(error){

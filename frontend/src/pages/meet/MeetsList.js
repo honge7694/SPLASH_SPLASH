@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Axios from 'axios';
 import { Button, Card, notification } from 'antd';
 import { FrownOutlined } from '@ant-design/icons';
 import { useResetRecoilState } from "recoil";
@@ -8,19 +7,20 @@ import { userState } from 'state';
 import { useAppContext } from 'store';
 import MeetListLayout from 'components/meet/MeetListLayout';
 import CalendarLayout from 'components/meet/CalendarLayout';
+import { axiosInstance } from 'api';
 
 const MeetsList = () => {
     const [meetList, setMeetList] = useState([]);
     const history = useNavigate();
     const { store: token } = useAppContext();
     const resetUser = useResetRecoilState(userState);
-    const apiUrl = 'http://localhost:8000/meet/';
+    const apiUrl = '/meet/';
     const headers = { Authorization: `Bearer ${token['jwtToken']}`};
 
     useEffect(() => {
         async function fetchMeetList() {
             try{
-                const { data } = await Axios.get(apiUrl, {headers});
+                const { data } = await axiosInstance.get(apiUrl, {headers});
                 setMeetList(data);
             }catch(error){
                 console.log(error);

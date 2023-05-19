@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { FrownOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
-import Axios from 'axios';
 import PostEditForm from 'components/post/PostEditForm';
 import { useAppContext } from 'store';
 import { useResetRecoilState } from "recoil";
 import { userState } from 'state';
+import { axiosInstance } from 'api';
 
 
 const PostEdit = () => {
@@ -20,9 +20,9 @@ const PostEdit = () => {
         const headers = { Authorization: `Bearer ${token['jwtToken']}`};
 
         async function fetchPostData() { 
-            const apiUrl = 'http://localhost:8000/post/'+ id +'/'
+            const apiUrl = '/post/'+ id +'/'
             try{
-                const { data } = await Axios.get(apiUrl, { headers });
+                const { data } = await axiosInstance.get(apiUrl, { headers });
                 setPost(data);
 
             } catch(error){

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Form, Input, Select, DatePicker, notification, Card } from 'antd';
 import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
-import Axios from "axios";
-import { Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../style/accounts/Signup.scss';
+import { axiosInstance } from 'api';
 
 
 const SignupForm = () => {
@@ -25,7 +25,7 @@ const SignupForm = () => {
             SetFieldsErrors({});
 
             try{
-                const response = await Axios.post('http://localhost:8000/accounts/signup/', data);
+                const response = await axiosInstance.post('/accounts/signup/', data);
 
                 api.info({
                     message: '회원가입 성공',

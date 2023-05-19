@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Layout, Avatar, Tabs, Button, Form, Input, Select, DatePicker, notification, Card } from 'antd';
-import { UserOutlined, CameraOutlined, HeartOutlined, SmileOutlined, FrownOutlined} from '@ant-design/icons';
+import { Layout, Avatar, Tabs, notification, Card } from 'antd';
+import { FrownOutlined} from '@ant-design/icons';
 import { useAppContext } from 'store';
-import { DefaultValue, useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { userState } from 'state';
-import Axios from "axios";
-import moment from "moment";
+import { axiosInstance } from 'api'
 import UserArticleList from 'components/accounts/UserArticleList';
 
 
@@ -23,10 +22,10 @@ const UserArticleLayout = () => {
 
     useEffect(() => {
         async function fetchMeetList() {
-            const apiUrl = 'http://localhost:8000/meet/article/';
+            const apiUrl = '/meet/article/';
             try{
                 const headers = { Authorization: `Bearer ${token['jwtToken']}`};
-                const { data } = await Axios.get(apiUrl, {headers});
+                const { data } = await axiosInstance.get(apiUrl, {headers});
                 setMeetList(data);
             }catch(error){
                 console.log(error);
@@ -46,10 +45,10 @@ const UserArticleLayout = () => {
         fetchMeetList();
 
         async function fetchPostList() {
-            const apiUrl = 'http://localhost:8000/post/article/';
+            const apiUrl = '/post/article/';
             try{
                 const headers = { Authorization: `Bearer ${token['jwtToken']}`};
-                const { data } = await Axios.get(apiUrl, {headers});
+                const { data } = await axiosInstance.get(apiUrl, {headers});
                 setPostList(data);
             }catch(error){
                 console.log(error);
@@ -58,10 +57,10 @@ const UserArticleLayout = () => {
         fetchPostList();
 
         async function fetchProfile() {
-            const apiUrl = `http://localhost:8000/accounts/edit/${user['userId']}/`;
+            const apiUrl = `/accounts/edit/${user['userId']}/`;
             try{
                 const headers = { Authorization: `Bearer ${token['jwtToken']}`};
-                const { data } = await Axios.get(apiUrl, {headers});
+                const { data } = await axiosInstance.get(apiUrl, {headers});
                 setProfile(data);
             }catch(error){
                 console.log(error);

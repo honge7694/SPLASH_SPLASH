@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button, Card, Form, Input, Modal, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import getBase64FromFile from 'utils/base64';
-import Axios from 'axios';
+import { axiosInstance } from 'api'
 import { useAppContext } from 'store';
 
 
@@ -25,7 +25,7 @@ const PostEditForm = ({post}) => {
             uid: image.id,
             name: image.name,
             status: 'done',
-            url: `http://localhost:8000/media/${image.image}`,
+            url: `${image.image}`,
         }));
         setFileList(convertedFileList);
         }
@@ -59,7 +59,7 @@ const PostEditForm = ({post}) => {
             formData.append("image", file.originFileObj);
         });
         const headers = { Authorization: `Bearer ${token['jwtToken']}`};
-        const response = await Axios.patch(`http://localhost:8000/post/${id}/`, formData, { headers });
+        const response = await axiosInstance.patch(`/post/${id}/`, formData, { headers });
         console.log(response);
 
         if (response.status === 200){

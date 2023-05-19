@@ -3,10 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FrownOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
 import { userState } from 'state';
-import Axios from 'axios';
 import { useAppContext } from 'store';
 import { useResetRecoilState } from "recoil";
 import MeetDetailLayout from "../../components/meet/MeetDetailLayout";
+import { axiosInstance } from 'api';
 
 
 const MeetDetail = () => {
@@ -19,9 +19,9 @@ const MeetDetail = () => {
 
     useEffect(() => {
         async function fetchMeetData() { 
-            const apiUrl = 'http://localhost:8000/meet/'+ id +'/'
+            const apiUrl = '/meet/'+ id +'/'
             try{
-                const { data } = await Axios.get(apiUrl, { headers });
+                const { data } = await axiosInstance.get(apiUrl, { headers });
                 setMeet(data);
 
             } catch(error){

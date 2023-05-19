@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Carousel, Card, Avatar, notification, Tooltip, Typography } from 'antd';
+import React from 'react';
+import { Card, Avatar, notification, Tooltip, Typography } from 'antd';
 import { HeartTwoTone, HeartOutlined, EditOutlined, DeleteOutlined, MenuOutlined, FrownOutlined, SmileOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRecoilValue } from "recoil";
@@ -9,6 +9,7 @@ import TokenVerify from 'utils/TokenVerify';
 import { setToken, useAppContext } from 'store';
 import { userState } from 'state';
 import DetailMap from './DetailMap';
+import { axiosInstance } from 'api';
 
 
 const MeetDetailLayout = ({meet, setMeet}) => {
@@ -41,8 +42,8 @@ const MeetDetailLayout = ({meet, setMeet}) => {
 
     const handleLike = async () => {
         try{
-            const response = await Axios.post(`http://localhost:8000/meet/${id}/attendance/`, '', { headers })
-            const { data } = await Axios.get(`http://localhost:8000/meet/${id}/`, { headers });
+            const response = await axiosInstance.post(`/meet/${id}/attendance/`, '', { headers })
+            const { data } = await axiosInstance.get(`/meet/${id}/`, { headers });
             setMeet(data);
 
         }catch(error){
@@ -70,7 +71,7 @@ const MeetDetailLayout = ({meet, setMeet}) => {
         userVerify();
         
         if (user_id === user['userId']){
-            const response = await Axios.delete(`http://localhost:8000/meet/${id}/`, { headers });
+            const response = await axiosInstance.delete(`/meet/${id}/`, { headers });
 
             notification.open({
                 message: '게시글 삭제가 완료되었습니다.',

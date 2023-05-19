@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Form, Input, Select, DatePicker, notification, Card } from 'antd';
 import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
 import { useAppContext } from 'store';
-import { DefaultValue, useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { userState } from 'state';
-import Axios from "axios";
+import { axiosInstance } from 'api'
 import moment from "moment";
 
 
@@ -19,10 +19,10 @@ const ProfileEditForm = () => {
 
     useEffect(() => {
         async function fetchProfileData() {
-            const apiUrl = `http://localhost:8000/accounts/edit/${user['userId']}/`;
+            const apiUrl = `/accounts/edit/${user['userId']}/`;
             try{
                 const headers = { Authorization: `Bearer ${token['jwtToken']}`};
-                const { data } = await Axios.get(apiUrl, { headers });
+                const { data } = await axiosInstance.get(apiUrl, { headers });
                 console.log("response : ", data);
                 setProfile(data);
             }catch(error){
@@ -59,7 +59,7 @@ const ProfileEditForm = () => {
         formData.append('gender', gender);
         formData.append('password', password);
 
-        const response = await Axios.patch(`http://localhost:8000/accounts/edit/${user['userId']}/`, formData, { headers });
+        const response = await axiosInstance.patch(`/accounts/edit/${user['userId']}/`, formData, { headers });
         console.log(response);
         if (response.status === 200){
             notification.open({

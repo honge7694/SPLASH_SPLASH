@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, Modal, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import getBase64FromFile from 'utils/base64';
-import Axios from 'axios';
 import { useAppContext } from 'store';
+import { axiosInstance } from 'api';
 
 
 
@@ -45,7 +45,7 @@ const PostNewLayout = () => {
         });
 
         const headers = { Authorization: `Bearer ${token['jwtToken']}`};
-        const response = await Axios.post('http://localhost:8000/post/', formData, { headers });
+        const response = await axiosInstance.post('/post/', formData, { headers });
         console.log(response);
 
         history('/post');

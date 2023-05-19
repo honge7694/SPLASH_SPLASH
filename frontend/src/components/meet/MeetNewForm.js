@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Button, DatePicker, Form, Input, Modal, Select, TimePicker } from 'antd';
-import Axios from 'axios';
+import { Button, DatePicker, Form, Input, Select, TimePicker } from 'antd';
 import { useAppContext } from 'store';
 import WriteMap from './WriteMap';
+import { axiosInstance } from 'api';
 
 
 const MeetNewForm = () => {
@@ -26,7 +26,7 @@ const MeetNewForm = () => {
         fieldValues["date_at"] = fieldValues['date_at'].format("YYYY-MM-DD");
         fieldValues["time_at"] = fieldValues['time_at'].format("HH:mm");
         try{
-            const response = await Axios.post('http://localhost:8000/meet/', fieldValues, {headers});
+            const response = await axiosInstance.post('/meet/', fieldValues, {headers});
             console.log(response);
         }catch(error){
             console.log(error);

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Carousel, Card, Avatar, notification, Tooltip } from 'antd';
+import React from 'react';
+import { Carousel, Card, Avatar, notification, Tooltip } from 'antd';
 import { LeftOutlined, RightOutlined, HeartTwoTone, HeartOutlined, EditOutlined, DeleteOutlined, MenuOutlined, FrownOutlined, SmileOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRecoilValue } from "recoil";
-import Axios from "axios";
+import { axiosInstance } from 'api';
 import moment from "moment";
 import '../../style/post/PostLayout.scss';
 import TokenVerify from 'utils/TokenVerify';
@@ -59,7 +59,7 @@ const PostDetailLayout = ({post, handleLike}) => {
         userVerify();
         
         if (author.author.id === user['userId']){
-            const response = await Axios.delete(`http://localhost:8000/post/${id}/`, { headers });
+            const response = await axiosInstance.delete(`/post/${id}/`, { headers });
 
             notification.open({
                 message: '게시글 삭제가 완료되었습니다.',

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
 import { Card } from 'antd';
+import { axiosInstance } from 'api'
 import ImageSlider from 'components/ImageSlider';
 import HomePostList from 'components//HomePostList';
 import HomeMeetList from 'components//HomeMeetList';
@@ -9,13 +9,13 @@ import HomeMeetList from 'components//HomeMeetList';
 const Home = () => {
     const [meetList, setMeetList] = useState([]);
     const [postList, setPostList] = useState([]);
-    const MeetApiUrl = 'http://localhost:8000/meet/';
-    const PostApiUrl = 'http://localhost:8000/post/';
+    const MeetApiUrl = '/meet/';
+    const PostApiUrl = '/post/';
 
     useEffect(() => {
         async function fetchMeetList() {
             try{
-                const { data } = await Axios.get(MeetApiUrl);
+                const { data } = await axiosInstance.get(MeetApiUrl);
                 setMeetList(data);
             }catch(error){
                 console.log(error);
@@ -24,7 +24,7 @@ const Home = () => {
         }
         async function fetchPostList() {
             try{
-                const { data } = await Axios.get(PostApiUrl);
+                const { data } = await axiosInstance.get(PostApiUrl);
                 setPostList(data);
             }catch(error){
                 console.log(error);

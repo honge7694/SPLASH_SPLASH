@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Button, DatePicker, Form, Input, Modal, Select, TimePicker } from 'antd';
-import Axios from 'axios';
+import { Button, DatePicker, Form, Input, Select, TimePicker } from 'antd';
 import moment from "moment";
 import { useAppContext } from 'store';
 import WriteMap from './WriteMap';
+import { axiosInstance } from 'api';
 
 
 const MeetEditForm = ({meet}) => {
@@ -47,7 +47,7 @@ const MeetEditForm = ({meet}) => {
         formData.append('time_at', time_atField.format('HH:mm'));
         formData.append('status', status)
 
-        const response = await Axios.put(`http://localhost:8000/meet/${id}/`, formData, { headers });
+        const response = await axiosInstance.put(`/meet/${id}/`, formData, { headers });
         console.log(response);
         if (response.status === 200){
             history(`/meet/${id}`)

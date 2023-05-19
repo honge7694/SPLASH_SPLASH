@@ -4,9 +4,9 @@ import { Comment as AntdComment } from '@ant-design/compatible';
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useRecoilValue } from "recoil";
 import { userState } from 'state';
-import Axios from 'axios';
 import { useAppContext } from 'store';
 import moment from "moment";
+import { axiosInstance } from 'api';
 
 
 const Comment = ({comment, setCommentList, postId}) => {
@@ -24,10 +24,10 @@ const Comment = ({comment, setCommentList, postId}) => {
     }
 
     const handleEditOk = async (comment_id) => {
-        const apiUrl = 'http://localhost:8000/post/'+ postId +'/comment/' + comment_id + '/' 
+        const apiUrl = '/post/'+ postId +'/comment/' + comment_id + '/' 
         try {
-            const response = await Axios.put(apiUrl, {content: editCommentContent}, {headers});
-            const {data} = await Axios.get('http://localhost:8000/post/'+ postId +'/comment/', { headers });
+            const response = await axiosInstance.put(apiUrl, {content: editCommentContent}, {headers});
+            const {data} = await axiosInstance.get('/post/'+ postId +'/comment/', { headers });
             setCommentList(data);
 
         } catch(error){
@@ -46,10 +46,10 @@ const Comment = ({comment, setCommentList, postId}) => {
     }
 
     const handleDeleteOk = async () => {
-        const apiUrl = 'http://localhost:8000/post/'+ postId +'/comment/' + comment_id + '/' 
+        const apiUrl = 'post/'+ postId +'/comment/' + comment_id + '/' 
         try {
-            const response = await Axios.delete(apiUrl, {headers});
-            const {data} = await Axios.get('http://localhost:8000/post/'+ postId +'/comment/', { headers });
+            const response = await axiosInstance.delete(apiUrl, {headers});
+            const {data} = await axiosInstance.get('/post/'+ postId +'/comment/', { headers });
             setCommentList(data);
 
         } catch(error){

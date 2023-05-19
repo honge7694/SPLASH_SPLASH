@@ -79,6 +79,7 @@ class PostSerializer(serializers.ModelSerializer):
         # 새로운 이미지 추가
         for image_data in new_image_data:
             PostImage.objects.create(post=instance, image=image_data)
+        instance.save()
 
         return instance
 
