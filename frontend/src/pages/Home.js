@@ -37,7 +37,7 @@ const Home = () => {
 
     return (
         <div>
-            <div style={{marginBottom: "1.5rem"}}>
+            <div style={{marginBottom: "1.5rem" }}>
                 <ImageSlider />
             </div>
             <hr style={{width: "1018px", color: "gray"}}></hr>
