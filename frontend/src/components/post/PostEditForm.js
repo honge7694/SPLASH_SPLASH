@@ -129,8 +129,8 @@ const PostEditForm = ({post}) => {
                     <Modal open={previewPhoto.visible} footer={null} onCancel={() => setPreviewPhoto({ visible: false })}>
                         <img src={previewPhoto.base64} style={{ width: '100%'}} alt='Preview' />
                     </Modal>
-                    <hr/>
-                    {JSON.stringify(fileList)}
+                    {/* <hr/> */}
+                    {/* {JSON.stringify(fileList)} */}
                 </Form>
             </Card>
         </div>

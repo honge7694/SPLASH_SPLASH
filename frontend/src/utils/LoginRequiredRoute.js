@@ -8,9 +8,10 @@ const LoginRequiredRoute = ({ component, ...kwargs}) => {
     const location = useLocation();
 
     if ( !isAuthenticated ) {
+        console.log("isAuthenticated : ", isAuthenticated);
         return <Navigate to="/accounts/login" state={{ from: location}} />
     } 
-
+    
     console.log("isAuthenticated : ", isAuthenticated);
     return (
         <Outlet {...kwargs}>

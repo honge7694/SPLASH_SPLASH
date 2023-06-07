@@ -14,9 +14,7 @@ const Root = () => {
         <RecoilRoot>
             <AppLayout>
                 <Routes>
-                    <Route element={<LoginRequiredRoute />}>
-                        <Route path="/" element={ <Home /> }></Route>
-                    </Route>
+                    <Route path="/" element={ <Home /> }></Route>
                     <Route path="/accounts/*" element={ <AccountsRoutes /> }/>
                     <Route path='/post/*' element= { <PostsRoutes /> } />
                     <Route path='/meet/*' element={ <MeetsRoutes/> } />
