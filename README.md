@@ -218,47 +218,64 @@
 <details>
 <summary>회원가입, 로그인, 카카오 추가 정보 입력</summary>
 <div markdown="1">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/5b62358b-ac50-4c9d-b572-5ea365aaeb90"> <img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/8afb8660-7a74-418c-9c85-9cc9cd7e6064">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/2cdf1d80-378d-43ae-92f6-251e20d8ff49">
+ 
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/9902d34d-0771-401f-84c4-99413de5becb)
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/c90bb954-14ab-497f-ad16-fd77daa7afbd)
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/24d1bb3a-fef3-481f-beaa-e4ea9a60bede)
+
 </div>
 </details>
 
 <details>
 <summary>메인 페이지</summary>
 <div markdown="2">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/e961d621-27bf-4e59-97f0-7a21e2ef5c6c">
+ 
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/06f0d0e8-bc8c-436c-ba9c-1d330cc1c2bd)
+
 </div>
 </details>
 
 
 <details>
-<summary>커뮤니티 - 작성/수정/삭제/리스트</summary>
+<summary>커뮤니티 - 작성/수정/상세/리스트</summary>
 <div markdown="3">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/65aa294c-b983-4efe-93b5-202749933080">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/7b96c74d-c2a3-4444-85f0-b600569177b3">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/2fa824c6-fcc5-47e1-a175-6c303bdeb10e">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/182c9595-57ba-46e0-bcaf-0f31a1b190c1">
+ 
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/ca8cd946-2663-42f0-89f2-592f7902f6c5)
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/c1644654-e59d-4e26-8ccc-af660d2bf5dd)
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/de9a098e-0185-4bb2-b5f2-9a29ac905678)
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/6e65b57e-02b3-44d4-aa28-6a167df6602d)
+
 </div>
 </details>
 
 <details>
-<summary>모임게시판 - 작성/수정/삭제/리스트</summary>
+<summary>모임게시판 - 작성/수정/상세/리스트</summary>
 <div markdown="4">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/1530e9de-4d92-43d1-a688-a1a2628d1e65">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/d2b1c552-2455-481d-9d16-e6c1e6a0c04c">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/00a8ede5-a350-4e97-9623-ac5bbdb8f09b">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/f9d44869-d60d-4ad1-be45-7cb347a175a5">
+
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/f3a9df6f-d78c-42c8-bd91-963f50364dce)
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/f4153268-7d34-49b5-8c5c-434eeaa4c6dd)
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/bf1f8f00-3d22-41c6-99e8-88e4ebad1371)
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/9f77d7d4-7761-4d1a-a2b7-41eba6aa26c6)
+
 </div>
 </details>
 
 <details>
 <summary>마이 프로필 - 게시글/작성한 글 모아보기, 프로필 수정</summary>
 <div markdown="5">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/207a3afc-c5c6-46aa-a203-4d9b4711bbb3">
-<img width="364" src="https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/c13aa271-2563-433b-8e93-64a54682784b">
+
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/30442f8f-4ac0-4589-adcd-ddba9832f7a6)
+![image](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/5882c3f6-46fa-4d93-b13d-800e666c36d4)
+
 </div>
 </details>
 
+<details>
+<summary>채팅</summary>
+
+![ezgif com-video-to-gif](https://github.com/honge7694/SPLASH_SPLASH/assets/76715487/a71af43f-9798-4207-87ca-ec4c0a84a528)
+
+</details>
 </br>
 
 ## 🛠 Trouble Shooting
